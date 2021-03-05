@@ -1,0 +1,12 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/tailwind.css": "/css/tailwind.css",
+    "/css/bootstrap.css": "/css/bootstrap.css",
+    "/vendor/chart.js/Chart.bundle.js": "/vendor/chart.js/Chart.bundle.js",
+    "/vendor/chart.js/Chart.bundle.min.js": "/vendor/chart.js/Chart.bundle.min.js",
+    "/vendor/chart.js/Chart.css": "/vendor/chart.js/Chart.css",
+    "/vendor/chart.js/Chart.js": "/vendor/chart.js/Chart.js",
+    "/vendor/chart.js/Chart.min.css": "/vendor/chart.js/Chart.min.css",
+    "/vendor/chart.js/Chart.min.js": "/vendor/chart.js/Chart.min.js"
+}

@@ -1,0 +1,53 @@
+.panel {
+    @apply tw-my-1 tw-rounded-lg tw-transition-all tw-duration-100;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    box-shadow: 0 0 20px 0 rgba(76, 87, 125, .20);
+    
+    &:hover {
+        filter: brightness(115%);
+    }
+    
+    .icon {
+        padding: .3rem;
+        color: theme('colors.gray.100');
+        svg {
+            height: 4rem;
+            width: 4rem;
+        }
+    }
+    .content {
+        align-self: center;
+        flex: 1 1 0%;
+        color: theme('colors.gray.100');
+        
+        .title {
+            font-weight: 500;
+        }
+        .main {
+            @apply tw-font-semibold tw-text-xl;
+        }
+        .link {
+            position: absolute;
+            display: inline-block;
+            color: theme('colors.gray.300');
+            bottom: 0;
+            right: 0;
+            margin-bottom: .7rem;
+            margin-right: .7rem;
+        }
+    }
+    &.panel-primary {
+        background: theme-color('primary');
+    }
+    &.panel-danger {
+        background: theme-color('danger');
+    }
+    &.panel-warning {
+        background: theme-color('warning');
+    }
+    &.panel-success {
+        background: theme-color('success');
+    }
+}

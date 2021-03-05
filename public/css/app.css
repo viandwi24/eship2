@@ -1,0 +1,273 @@
+@import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+@import url(https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css);
+/* Font */
+
+/* Variables */
+
+* {
+  font-family: "Poppins", sans-serif;
+}
+
+/* Dashboard */
+
+body > .dashboard {
+  background: #f3f4f6;
+  min-height: 100vh;
+}
+
+body > .dashboard > .sidebar {
+  position: fixed;
+  background: #1f2937;
+  width: 250px;
+  border-right: 2px solid #4b5563;
+  display: block;
+  max-height: 100%;
+  min-height: 100%;
+}
+
+body > .dashboard > .sidebar > .sidebar-container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  min-height: 100%;
+  overflow-y: auto;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-header {
+  position: relative;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-header .toggle-sidebar-menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 0.4rem;
+  color: #9ca3af;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-header .toggle-sidebar-menu i {
+  font-size: 2rem;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-header .sidebar-brand {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: #d1d5db;
+  text-decoration: none;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  flex: 1 1 0%;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu {
+  padding: 0;
+  margin: 0;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.header {
+  padding: 12px 28px;
+  margin-top: 1.5rem;
+  color: #d1d5db;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.item a {
+  text-decoration: none;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.item {
+  position: relative;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.item a {
+  padding: 12px 32px 12px 72px;
+  color: #d1d5db;
+  display: block;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.item a .icon {
+  color: #d1d5db;
+  position: absolute;
+  top: calc(50% - 14px);
+  left: 24px;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.item.active a {
+  background: rgba(30, 58, 138, 0.5);
+  border-left: 5px solid #60a5fa;
+  padding: 12px 32px 12px 67px;
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+body > .dashboard > .sidebar > .sidebar-container .sidebar-menu ul.menu li.item.active a .icon {
+  color: #60a5fa;
+}
+
+body > .dashboard > .navbar {
+  --tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  padding: 0;
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 250px;
+  width: calc(100% - 250px);
+  background: #f9fafb;
+  max-height: 86px;
+}
+
+body > .dashboard > .navbar > .navbar-container {
+  justify-content: space-between;
+  display: flex;
+  position: relative;
+}
+
+body > .dashboard > .navbar > .navbar-container .navbar-header {
+  padding: 10px;
+}
+
+body > .dashboard > .navbar > .navbar-container .navbar-header .navbar-brand {
+  border-left: 10px solid #60a5fa;
+  align-self: center;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+body > .dashboard > .navbar > .navbar-container .navbar-header .navbar-brand a {
+  color: #374151;
+  text-decoration: none;
+}
+
+body > .dashboard > .navbar > .navbar-container .navbar-header .navbar-brand .title {
+  font-weight: 600;
+}
+
+body > .dashboard > .navbar > .navbar-container .navbar-header .navbar-brand .subtitle {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+body > .dashboard > .navbar > .navbar-container .menu {
+  align-self: center;
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  padding: 0;
+  flex-direction: row;
+  height: 86px;
+}
+
+body > .dashboard > .navbar > .navbar-container .menu li {
+  align-self: center;
+  height: 86px;
+  display: block;
+  padding: 30px;
+}
+
+body > .dashboard > .navbar > .navbar-container .menu li a {
+  align-self: center;
+  text-decoration: none;
+  color: #1f2937;
+}
+
+body > .dashboard > .navbar > .navbar-container .menu li a .icon {
+  display: inline;
+  margin: 0 10px;
+}
+
+body > .dashboard > .body {
+  padding-top: 86px;
+  padding-left: 250px;
+}
+
+body > .dashboard > .body .content {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.panel {
+  border-radius: 0.5rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-duration: 100ms;
+  position: relative;
+  display: flex;
+  cursor: pointer;
+  box-shadow: 0 0 20px 0 rgba(76, 87, 125, 0.2);
+}
+
+.panel:hover {
+  filter: brightness(115%);
+}
+
+.panel .icon {
+  padding: 0.3rem;
+  color: #f3f4f6;
+}
+
+.panel .icon svg {
+  height: 4rem;
+  width: 4rem;
+}
+
+.panel .content {
+  align-self: center;
+  flex: 1 1 0%;
+  color: #f3f4f6;
+}
+
+.panel .content .title {
+  font-weight: 500;
+}
+
+.panel .content .main {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.panel .content .link {
+  position: absolute;
+  display: inline-block;
+  color: #d1d5db;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 0.7rem;
+  margin-right: 0.7rem;
+}
+
+.panel.panel-primary {
+  background: #2F7AF9;
+}
+
+.panel.panel-danger {
+  background: #FA5158;
+}
+
+.panel.panel-warning {
+  background: #ffc107;
+}
+
+.panel.panel-success {
+  background: #198754;
+}
+
+@media (min-width: 1024px) {
+  .negative-illustration {
+    margin-top: -80px;
+  }
+}

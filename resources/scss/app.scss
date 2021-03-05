@@ -1,0 +1,221 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.0/font/bootstrap-icons.css");
+
+/* Variables */
+@import "variables";
+$primaryColor: theme('colors.blue.400');
+$contentBackgroundColor: theme('colors.gray.100');
+$sidebarWidth: 250px;
+$sidebarBackgroundColor: theme('colors.gray.800');
+$sidebarBorderColor: theme('colors.gray.600');
+$sidebarItemColor: theme('colors.gray.300');
+$sidebarItemActive: $primaryColor;
+$sidebarItemBackgroundActive: #1e3a8a;
+$navbarBackgroundColor: theme('colors.gray.50');
+$navbarHeight: 86px;
+
+// functions
+@function color($key: "blue") {
+    @return map-get($colors, $key);
+}
+@function theme-color($key: "primary") {
+    @return map-get($theme-colors, $key);
+}
+
+// default
+* {
+    font-family: 'Poppins', sans-serif;
+    // font-family: 'Noto Sans TC', sans-serif;
+    // font-family: 'Nunito', sans-serif #{!important};
+}
+
+/* Dashboard */
+body > .dashboard {
+    background: $contentBackgroundColor;
+    min-height: 100vh;
+    
+    & > .sidebar {
+        position: fixed;
+        background: $sidebarBackgroundColor;
+        width: $sidebarWidth;
+        border-right: 2px solid #{$sidebarBorderColor};
+        display: block;
+        max-height: 100%;
+        min-height: 100%;
+        
+        & > .sidebar-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-height: 100%;
+            min-height: 100%;
+            overflow-y: auto;
+
+            .sidebar-header {
+                position: relative;
+                padding: 1rem 0;
+                text-align: center;
+                .toggle-sidebar-menu {
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    margin-top: .4rem;
+                    color: theme('colors.gray.400');
+                    i {
+                        font-size: 2rem;
+                    }
+                }
+                .sidebar-brand {
+                    @apply tw-font-semibold tw-text-xl;
+                    color: theme('colors.gray.300');
+                    text-decoration: none;
+                }
+            }
+
+            .sidebar-menu {
+                padding-top: 30px;
+                padding-bottom: 30px;
+                flex: 1 1 0%;
+                ul.menu {
+                    padding: 0;
+                    margin: 0;
+
+
+                    li.header {
+                        padding: 12px 28px;
+                        margin-top: 1.5rem;
+                        color: $sidebarItemColor;
+                    }
+
+                    // general
+                    li.item {
+                        a {
+                            text-decoration: none;
+                        }
+                    }
+
+                    // item default
+                    li.item {
+                        position: relative;
+                        a {
+                            padding: 12px 32px 12px 72px;
+                            color: $sidebarItemColor;
+                            display: block;
+                            @apply tw-text-base;
+                            .icon {
+                                color: $sidebarItemColor;
+                                position: absolute;
+                                top: calc(50% - 14px);
+                                left: 24px;
+                            }
+                        }
+                    }
+                    li.item.active {
+                        a {
+                            background: rgba($color: $sidebarItemBackgroundActive, $alpha: .5);
+                            border-left: 5px solid $primaryColor;
+                            padding: 12px 32px 12px 67px;
+                            color: $sidebarItemActive;
+                            font-weight: 600;
+                            .icon {
+                                color: $sidebarItemActive;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .sidebar-footer {
+                
+            }
+        }
+    }
+
+    & > .navbar {
+        @apply tw-shadow;
+        padding: 0;
+        position: fixed;
+        display: block;
+        top: 0;
+        left: $sidebarWidth;
+        width: calc(100% - #{$sidebarWidth});
+        background: $navbarBackgroundColor;
+        max-height: $navbarHeight;
+
+        & > .navbar-container {
+            @apply tw-justify-between;
+            display: flex;
+            position: relative;
+
+            .navbar-header {
+                padding: 10px;
+                .navbar-brand {
+                    border-left: 10px solid $primaryColor;
+                    align-self: center;
+                    padding: 10px;
+                    display: flex;
+                    flex-direction: column;
+                    a {
+                        color: theme('colors.gray.700');
+                        text-decoration: none;
+                    }
+                    .title {
+                        @apply tw-font-semibold;
+                    }
+                    .subtitle {
+                        @apply tw-text-xs;
+                    }
+                }
+            }
+
+            .menu {
+                align-self: center;
+                margin: 0;
+                padding: 10px;
+                display: flex;
+                padding: 0;
+                flex-direction: row;
+                height: $navbarHeight;
+                li {
+                    align-self: center;
+                    height: $navbarHeight;
+                    display: block;
+                    padding: 30px;
+                    
+                    a {
+                        align-self: center;
+                        text-decoration: none;
+                        color: theme('colors.gray.800');
+
+                        .icon {
+                            display: inline;
+                            margin: 0 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    & > .body {
+        padding-top: $navbarHeight;
+        padding-left: $sidebarWidth;
+
+        .content {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+    }
+}
+
+// components
+@import "components/widget";
+
+// 
+@screen lg {
+    .negative-illustration {
+        margin-top: -80px;
+    }
+}
