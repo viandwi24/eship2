@@ -20,7 +20,7 @@ $navbarHeight: 86px;
     @return map-get($colors, $key);
 }
 @function theme-color($key: "primary") {
-    @return map-get($theme-colors, $key);
+    @return map-get($theme-colors, $key);   
 }
 
 // default
@@ -34,6 +34,7 @@ $navbarHeight: 86px;
 body > .dashboard {
     background: $contentBackgroundColor;
     min-height: 100vh;
+    overflow: hidden;
     
     & > .sidebar {
         position: fixed;
@@ -43,6 +44,16 @@ body > .dashboard {
         display: block;
         max-height: 100%;
         min-height: 100%;
+        display: none;
+        z-index: 30;
+
+        @screen lg {
+            display: block;
+        }
+
+        &.mobile-show {
+            display: block #{!important};
+        }
         
         & > .sidebar-container {
             position: absolute;
@@ -137,36 +148,72 @@ body > .dashboard {
         @apply tw-shadow;
         padding: 0;
         position: fixed;
-        display: block;
         top: 0;
-        left: $sidebarWidth;
-        width: calc(100% - #{$sidebarWidth});
         background: $navbarBackgroundColor;
         max-height: $navbarHeight;
+        z-index: 20;
+        width: 100vw;
+        max-width: 100vw;
+
+        @screen lg {
+            left: $sidebarWidth;
+            width: calc(100% - #{$sidebarWidth});
+            max-width: calc(100% - #{$sidebarWidth});
+        }
 
         & > .navbar-container {
             @apply tw-justify-between;
             display: flex;
             position: relative;
+            width: 100%;
 
             .navbar-header {
                 padding: 10px;
                 .navbar-brand {
-                    border-left: 10px solid $primaryColor;
                     align-self: center;
                     padding: 10px;
                     display: flex;
                     flex-direction: column;
+
+                    @screen lg {
+                        border-left: 10px solid $primaryColor;
+                    }
+
                     a {
                         color: theme('colors.gray.700');
                         text-decoration: none;
                     }
+
                     .title {
                         @apply tw-font-semibold;
+                        display: none;
+
+                        @screen lg {
+                            display: inline-block;
+                        }
                     }
+
                     .subtitle {
                         @apply tw-text-xs;
+                        display: none;
+
+                        @screen lg {
+                            display: inline-block;
+                        }
                     }
+                }
+            }
+
+            .toggle-sidebar {
+                display: inline-block;
+                height: $navbarHeight;
+                padding: 30px;
+                a {
+                    color: theme('colors.gray.700');
+                }
+
+                @screen lg {
+                    display: none;
                 }
             }
 
@@ -181,7 +228,6 @@ body > .dashboard {
                 li {
                     align-self: center;
                     height: $navbarHeight;
-                    display: block;
                     padding: 30px;
                     
                     a {
@@ -199,9 +245,49 @@ body > .dashboard {
         }
     }
 
-    & > .body {
-        padding-top: $navbarHeight;
-        padding-left: $sidebarWidth;
+    & > .main {
+        margin-top: $navbarHeight;
+        padding-top: 1rem;
+        
+        @screen lg {
+            margin-left: $sidebarWidth;
+        }
+
+        & > .container {
+            margin-top: 1rem;
+            position: relative;
+        }
+
+        .content-header {
+            .header {
+                @apply tw-flex tw-justify-between tw-flex-col;
+
+                @screen lg {
+                    @apply tw-flex-row;
+                }
+
+                .title {
+                    @apply tw-text-3xl tw-font-semibold;
+                    color: theme('colors.gray.700');
+                }
+
+                .actions {
+                    margin-top: 1rem;
+
+                    @screen lg {
+                        margin-top: 0;
+                    }
+                }
+            }
+
+            .breadcrumb {
+                display: none;
+
+                @screen lg {
+                    display: flex;
+                }
+            }
+        }
 
         .content {
             padding-top: 20px;
@@ -210,8 +296,108 @@ body > .dashboard {
     }
 }
 
+// 
+body > .login-container {
+    .main {
+        display: flex;
+        width: 100vw;
+        
+        .background-overlay {
+            display: none;
+            @screen lg {
+                display: block;
+                flex: 1 1 0%;
+                z-index: 99;
+            }
+        }
+
+
+        .login-panel {
+            width: 100%;
+            height: 100vh;
+            background: rgba($color: #000000, $alpha: .6);
+            padding: 3rem 2rem;
+            position: relative;
+
+            @screen lg {
+                width: 400px;
+            }
+
+            .panel-container {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 100%;
+            }
+
+            .header {
+
+            }
+
+            .form {
+                .title {
+                    @apply tw-text-3xl tw-font-semibold;
+                    text-align: center;
+                    color: theme('colors.gray.100');
+                }
+                .header {
+                    margin-top: 1rem;
+                    color: theme('colors.gray.100');
+                    text-align: center;
+        
+                    div {
+                        &:nth-child(1) {
+                            @apply tw-font-semibold tw-text-xl;
+                        }
+                        &:nth-child(2) {
+                            @apply tw-text-sm;
+                        }
+                    }
+                }
+                form {
+                    margin: 2rem 0;
+                    label {
+                        color: theme('colors.gray.200');
+                    }
+                    button {
+                        padding: .7rem 5rem;
+                        border-radius: 2rem;
+                    }
+                }
+            }
+        }
+    }
+
+    .input-group {
+        border-radius: 2rem;
+        background: white;
+        display: flex;
+        position: relative;
+        overflow: hidden;
+        color: theme('colors.gray.700');
+        margin-bottom: 1rem;
+
+        input {
+            padding: .7rem 1rem;
+            padding-left: 3rem;
+            outline: none;
+            flex: 1 1 0%;
+            color: theme('colors.gray.700');
+        }
+
+        .icon {
+            position: absolute;
+            top: 50%;
+            margin-top: -.7rem;
+            margin-left: 1.2rem;
+            color: theme('colors.gray.700');
+        }
+    }
+}
+
 // components
 @import "components/widget";
+@import "components/table";
 
 // 
 @screen lg {
