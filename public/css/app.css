@@ -257,6 +257,7 @@ body > .dashboard > .main {
 
 body > .dashboard > .main > .container {
   margin-top: 1rem;
+  padding: 0 2rem;
   position: relative;
 }
 

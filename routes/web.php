@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\HomeController as DashboardHomeController;
 use App\Http\Controllers\Dashboard\WeatherController as DashboardWeatherController;
+use App\Http\Controllers\Dashboard\AccountController as DashboardAccountController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,7 @@ Route::group([
 ], function () {
     Route::get('/', [DashboardHomeController::class, 'index'])->name('dashboard');
     Route::resource('/weather', DashboardWeatherController::class);
+    Route::resource('/users', DashboardAccountController::class);
 });
 
 // 

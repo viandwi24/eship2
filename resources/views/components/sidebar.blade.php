@@ -1,15 +1,15 @@
 @php
     $menus = [
-        [ 'type' => 'item', 'text' => 'Dashboard', 'icon' => 'house', 'route' => route('dashboard'), 'regex' => 'dashboard' ],
-        [ 'type' => 'header', 'text' => 'Form Input' ],
-        [ 'type' => 'item', 'text' => 'Data Cuaca', 'icon' => 'cloud-drizzle', 'route' => route('weather.index'), 'regex' => '*weather*' ],
-        [ 'type' => 'item', 'text' => 'Operasi Kapal', 'icon' => 'cone-striped', 'route' => route('weather.index'), 'regex' => '*ship-operations*' ],
-        [ 'type' => 'header', 'text' => 'Form Petugas' ],
-        [ 'type' => 'item', 'text' => 'Form Lapor Kapal', 'icon' => 'megaphone', 'route' => route('weather.index'), 'regex' => '*ship-report*' ],
-        [ 'type' => 'header', 'text' => 'Laporan' ],
-        [ 'type' => 'item', 'text' => 'Laporan', 'icon' => 'newspaper', 'route' => route('weather.index'), 'regex' => '*report*' ],
-        [ 'type' => 'header', 'text' => 'Manajemen' ],
-        [ 'type' => 'item', 'text' => 'Akun', 'icon' => 'people', 'route' => route('weather.index'), 'regex' => '*account*' ],
+        [ 'role' => [], 'type' => 'item', 'text' => 'Dashboard', 'icon' => 'house', 'route' => route('dashboard'), 'regex' => 'dashboard' ],
+        [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Form Input' ],
+        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Data Cuaca', 'icon' => 'cloud-drizzle', 'route' => route('weather.index'), 'regex' => '*weather*' ],
+        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Operasi Kapal', 'icon' => 'cone-striped', 'route' => route('weather.index'), 'regex' => '*ship-operations*' ],
+        [ 'role' => ['Petugas'], 'type' => 'header', 'text' => 'Form Petugas' ],
+        [ 'role' => ['Petugas'], 'type' => 'item', 'text' => 'Form Lapor Kapal', 'icon' => 'megaphone', 'route' => route('weather.index'), 'regex' => '*ship-report*' ],
+        [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Laporan' ],
+        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Laporan', 'icon' => 'newspaper', 'route' => route('weather.index'), 'regex' => '*report*' ],
+        [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Manajemen' ],
+        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Akun', 'icon' => 'people', 'route' => route('users.index'), 'regex' => '*users*' ],
     ];
 @endphp
 
@@ -23,6 +23,7 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 @foreach ($menus as $item)
+                    @php  if (count($item['role']) > 0) if (!in_array(Auth::user()->role, $item['role'])) continue;  @endphp
                     @if ($item['type'] == 'item')
                         <li class="item {{ (request()->is($item['regex']) ? 'active' : '') }}">
                             <a href="{{ $item['route'] }}">

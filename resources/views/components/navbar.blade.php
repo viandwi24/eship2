@@ -1,7 +1,7 @@
 <div class="navbar">
     <div class="navbar-container">
         <div class="toggle-sidebar">
-            <a href="#">
+            <a href="#" class="toggle">
                 <svg class="bi icon" width="24" height="24" fill="currentColor">
                     <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#text-left') }}"/>
                 </svg>

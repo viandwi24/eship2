@@ -4946,6 +4946,8 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+__webpack_require__(/*! ./dashboard */ "./resources/js/dashboard.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -4980,6 +4982,64 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/dashboard.js":
+/*!***********************************!*\
+  !*** ./resources/js/dashboard.js ***!
+  \***********************************/
+/***/ (() => {
+
+document.addEventListener('DOMContentLoaded', function () {
+  init();
+}); // vars
+
+var sidebarMobileState = false; // init
+
+function init() {
+  initSidebarMobile();
+}
+
+function makeOverlay(zIndex) {
+  var action = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {};
+  var overlay = document.createElement('div');
+  overlay.style.background = 'rgba(0, 0, 0, .5)';
+  overlay.style.position = 'fixed';
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = "100vw";
+  overlay.style.height = '100vh';
+  overlay.style.zIndex = zIndex;
+  overlay.addEventListener('click', action);
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+var sidebarOverlay = null;
+
+function initSidebarMobile() {
+  var els = document.querySelectorAll('.navbar a.toggle');
+
+  var toggle = function toggle() {
+    var sidebar = document.querySelector('.sidebar');
+    sidebarMobileState = !sidebarMobileState; // 
+
+    if (sidebarMobileState) {
+      sidebar.classList.add('mobile-show');
+      sidebarOverlay = makeOverlay(29, toggle);
+    } else {
+      sidebar.classList.remove('mobile-show');
+      sidebarOverlay.remove();
+    } // 
+
+  }; // 
+
+
+  els.forEach(function (el) {
+    el.addEventListener('click', toggle);
+  });
+}
 
 /***/ }),
 
