@@ -97,7 +97,7 @@ class AccountController extends Controller
         $data = [];
         if ($user->role != $request->role) {
             $rules['role'] = 'required|in:Admin,Petugas,Super Duper Admin,Supervisor';
-            $data['role'] = $request->username;
+            $data['role'] = $request->role;
         }
         if ($user->name != $request->name) {
             $rules['name'] = 'required|string|min:3|max:100';

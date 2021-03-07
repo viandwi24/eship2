@@ -934,3 +934,7 @@ table.dataTable > thead .sorting_asc:before, table.dataTable > thead .sorting_de
     margin-top: -80px;
   }
 }
+
+.datepicker {
+  padding: 0.375rem 0.75rem !important;
+}
