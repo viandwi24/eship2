@@ -24,9 +24,14 @@ Route::group([
     'prefix' => 'dashboard',
     'middleware' => ['auth']
 ], function () {
+    // 
     Route::get('/', [DashboardHomeController::class, 'index'])->name('dashboard');
-    Route::resource('/weather', DashboardWeatherController::class);
-    Route::resource('/users', DashboardAccountController::class);
+    Route::get('/profil', [AuthController::class, 'profile'])->name('profile');
+    Route::post('/profil', [AuthController::class, 'profile_post'])->name('profile.post');
+
+    // 
+    Route::resource('/weather', DashboardWeatherController::class)->middleware('role:admin');
+    Route::resource('/users', DashboardAccountController::class)->middleware('role:admin');
 });
 
 // 

@@ -15,7 +15,7 @@
         </div>
         <ul class="menu">
             <li class="tw-hidden lg:tw-block">
-                <a href="#">
+                <a href="{{ route('profile') }}">
                     <svg class="bi icon" width="24" height="24" fill="currentColor">
                         <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person') }}"/>
                     </svg>

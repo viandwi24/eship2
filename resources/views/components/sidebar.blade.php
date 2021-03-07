@@ -1,7 +1,8 @@
 @php
     $menus = [
         [ 'role' => [], 'type' => 'item', 'text' => 'Dashboard', 'icon' => 'house', 'route' => route('dashboard'), 'regex' => 'dashboard' ],
-        [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Form Input' ],
+        [ 'role' => [], 'type' => 'item', 'text' => 'Profil', 'icon' => 'person', 'route' => route('profile'), 'regex' => 'dashboard/profil' ],
+        [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Administrasi' ],
         [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Data Cuaca', 'icon' => 'cloud-drizzle', 'route' => route('weather.index'), 'regex' => '*weather*' ],
         [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Operasi Kapal', 'icon' => 'cone-striped', 'route' => route('weather.index'), 'regex' => '*ship-operations*' ],
         [ 'role' => ['Petugas'], 'type' => 'header', 'text' => 'Form Petugas' ],

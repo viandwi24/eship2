@@ -1,6 +1,6 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Tambah   Akun')
+@section('title', 'Profil')
 
 @section('content')
     <div class="container">
@@ -8,7 +8,7 @@
         <div class="content-header">
             <div class="header">
                 <div class="title">
-                    Tambah Akun
+                    Profil
                 </div>
                 <div class="actions">
                     <a href="{{ route('users.index') }}" class="btn btn-secondary">
@@ -22,8 +22,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb"> 
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item">Akun</li>
-                    <li class="breadcrumb-item active" aria-current="page">Tambah</li>
+                    <li class="breadcrumb-item active" aria-current="page">Profil</li>
                 </ol>
             </nav>
         </div>
@@ -36,7 +35,7 @@
                         <!-- flush message error -->
                         <x-message />
                         <!-- flush message error:end -->
-                        <form action="{{ route('users.store') }}" method="POST" autocomplete="off">
+                        <form action="{{ route('profile.post') }}" method="POST" autocomplete="off">
                             @csrf
                             <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Nama</label>
@@ -47,7 +46,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#credit-card-2-front-fill') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="text" name="name" class="form-control" autocomplete="off">
+                                        <input type="text" name="name" class="form-control" autocomplete="off" value="{{ $user->name }}">
                                     </div>
                                 </div>
                             </div>
@@ -60,12 +59,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#award-fill') }}"/>
                                             </svg>
                                         </span>
-                                        <select name="role" class="choices form-select">
-                                            <option value="Admin">Admin</option>
-                                            <option value="Petugas">Petugas</option>
-                                            <option value="Supervisor">Supervisor</option>
-                                            <option value="Super Duper Admin">Super Duper Admin</option>
-                                        </select>
+                                        <input type="text" class="form-control" autocomplete="off" value="{{ $user->role }}" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +72,16 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person-fill') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="text" name="username" class="form-control" autocomplete="off">
+                                        <input type="text" name="username" class="form-control" autocomplete="off" value="{{ $user->username }}">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row my-2">
+                                <label class="col-sm-4 col-form-label text-md-end"></label>
+                                <div class="col-md-4">
+                                    <div class="alert alert-warning" role="alert">
+                                        Biarkan kosong jika tidak ingin mengganti password.
                                     </div>
                                 </div>
                             </div>

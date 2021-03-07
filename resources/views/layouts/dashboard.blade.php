@@ -17,6 +17,10 @@
 <body>
     <!-- dashboard -->
     <div class="dashboard">
+        <!-- loading-overlay -->
+        <div class="loading-overlay"><div class="lds-ripple"><div></div><div></div></div></div>
+        <!-- loading-overlay -->
+
         <!-- sidebar -->
         <x-sidebar />
         <!-- sidebar:end -->

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
@@ -19,7 +20,7 @@ class AccountController extends Controller
     {
         if ($request->ajax())
         {
-            $eloquent = User::query();
+            $eloquent = User::whereNotIn('id', [Auth::user()->id]);
             return DataTables::of($eloquent)
                 ->make(true);
         }
