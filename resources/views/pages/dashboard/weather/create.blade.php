@@ -14,9 +14,9 @@
                     <a href="{{ route('weather.index') }}" class="btn btn-secondary">
                         Batal
                     </a>
-                    <a href="" class="btn btn-primary">
+                    <button onclick="document.querySelector('form').submit()" class="btn btn-primary">
                         Simpan
-                    </a>
+                    </button>
                 </div>
             </div>
             <nav aria-label="breadcrumb">

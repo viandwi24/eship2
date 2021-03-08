@@ -14,9 +14,9 @@
                     <a href="{{ route('users.index') }}" class="btn btn-secondary">
                         Batal
                     </a>
-                    <a href="" class="btn btn-primary">
+                    <button onclick="document.querySelector('form').submit()" class="btn btn-primary">
                         Simpan
-                    </a>
+                    </button>
                 </div>
             </div>
             <nav aria-label="breadcrumb">
@@ -65,7 +65,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#calendar-fill') }}"/>
                                             </svg>
                                         </span>
-                                        <input class="form-control datepicker" data-date-format="dd-mm-yyyy" name="date" placeholder="Tanggal" autocomplete="off" value="{{ old('date') }}">
+                                        <input class="form-control datepicker" data-date-format="dd-mm-yyyy" name="date" placeholder="Tanggal" autocomplete="off" value="{{ old('date', \Carbon\Carbon::now()->format('d-m-Y')) }}">
                                     </div>
                                 </div>
                             </div>
