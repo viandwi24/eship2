@@ -17,9 +17,15 @@ class UserSeeder extends Seeder
     {
         User::create([
             'username' => 'admin',
-            'name' => 'Admin',
+            'name' => 'Contoh User Admin',
             'password' => Hash::make('admin'),
             'role' => 'Admin'
+        ]);
+        User::create([
+            'username' => 'petugas',
+            'name' => 'Contoh User Petugas',
+            'password' => Hash::make('petugas'),
+            'role' => 'Petugas'
         ]);
     }
 }

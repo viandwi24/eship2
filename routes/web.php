@@ -7,6 +7,8 @@ use App\Http\Controllers\Dashboard\WeatherController as DashboardWeatherControll
 use App\Http\Controllers\Dashboard\AccountController as DashboardAccountController;
 use App\Http\Controllers\Dashboard\ShipController as DashboardShipController;
 use App\Http\Controllers\Dashboard\ShipOperationController as DashboardShipOperationController;
+use App\Http\Controllers\Dashboard\ShipReportController as DashboardShipReportController;
+use App\Http\Controllers\Dashboard\RouteController as DashboardRouteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +38,8 @@ Route::group([
     Route::resource('/ships', DashboardShipController::class)->middleware('role:admin');
     Route::resource('/ship-operations', DashboardShipOperationController::class)->middleware('role:admin');
     Route::resource('/users', DashboardAccountController::class)->middleware('role:admin');
+    Route::resource('/routes', DashboardRouteController::class)->middleware('role:admin');
+    Route::resource('/ship-reports', DashboardShipReportController::class)->middleware('role:admin,petugas');
 });
 
 // 
