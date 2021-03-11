@@ -10,6 +10,7 @@ const sleep = (time) => new Promise(resolve => setTimeout(resolve, time))
 
 // init
 function init() {
+    initSidebar()
     initSidebarMobile()
     initLinkLoading()
     initLinkToggle()
@@ -29,6 +30,11 @@ function makeOverlay(zIndex, action = () => {}) {
     overlay.addEventListener('click', action)
     document.body.appendChild(overlay)
     return overlay
+}
+
+// 
+function initSidebar () {
+    
 }
 
 // 

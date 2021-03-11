@@ -16,7 +16,7 @@ class CreateShipOperationsTable extends Migration
         Schema::create('ship_operations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ship_id')->onUpdate('cascade')->onDelete('cascade');
-            $table->date('date');
+            $table->date('date')->unique();
             $table->enum('status', ['Beroperasi', 'Tidak Beroperasi']);
             $table->enum('description', ['Aman', 'Cuaca Buruk', 'Perbaikan Mesin', 'Docking']);
             $table->string('location');

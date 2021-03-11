@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\ShipOperation;
+use App\Models\ShipReport;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
 {
@@ -12,9 +16,31 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax())
+        {
+            $eloquent = ShipOperation::with('ship');
+            return DataTables::of($eloquent)
+                ->editColumn('date', function ($q) { return date('d-m-Y', strtotime($q->date)); })  
+                ->addColumn('petugas', function (ShipOperation $shipOperation) {
+                    $petugas = ShipReport::with('user')->where('date', $shipOperation->date)->get();
+                    return $petugas->pluck('user.name')->unique()->join(', ');
+                })
+                ->addColumn('pax', function (ShipOperation $shipOperation) {
+                    $reports = ShipReport::where('date', $shipOperation->date)->get();
+                    $pax = 0;
+                    foreach ($reports as $item)
+                    {
+                        $pax += $item->count_adult
+                            + $item->count_baby
+                            + $item->count_security_forces;
+                    }
+                    return $pax;
+                })
+                ->make(true);
+        }
+        return view('pages.dashboard.report.index');
     }
 
     /**

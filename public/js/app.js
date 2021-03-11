@@ -5026,6 +5026,7 @@ var sleep = function sleep(time) {
 
 
 function init() {
+  initSidebar();
   initSidebarMobile();
   initLinkLoading();
   initLinkToggle();
@@ -5049,6 +5050,9 @@ function makeOverlay(zIndex) {
   document.body.appendChild(overlay);
   return overlay;
 } // 
+
+
+function initSidebar() {} // 
 
 
 var sidebarOverlay = null;

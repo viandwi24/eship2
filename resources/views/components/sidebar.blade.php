@@ -10,7 +10,7 @@
         [ 'role' => ['Admin', 'Petugas'], 'type' => 'header', 'text' => 'Form Petugas' ],
         [ 'role' => ['Admin', 'Petugas'], 'type' => 'item', 'text' => 'Lapor Kapal', 'icon' => 'megaphone', 'route' => route('ship-reports.index'), 'regex' => '*ship-reports*' ],
         [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Laporan' ],
-        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Laporan', 'icon' => 'newspaper', 'route' => route('weather.index'), 'regex' => '*/report*' ],
+        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Laporan', 'icon' => 'newspaper', 'route' => route('reports'), 'regex' => '*/report*' ],
         [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Manajemen' ],
         [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Akun', 'icon' => 'people', 'route' => route('users.index'), 'regex' => '*users*' ],
     ];

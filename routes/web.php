@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\ShipController as DashboardShipController;
 use App\Http\Controllers\Dashboard\ShipOperationController as DashboardShipOperationController;
 use App\Http\Controllers\Dashboard\ShipReportController as DashboardShipReportController;
 use App\Http\Controllers\Dashboard\RouteController as DashboardRouteController;
+use App\Http\Controllers\Dashboard\ReportController as DashboardReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,9 @@ Route::group([
     Route::resource('/users', DashboardAccountController::class)->middleware('role:admin');
     Route::resource('/routes', DashboardRouteController::class)->middleware('role:admin');
     Route::resource('/ship-reports', DashboardShipReportController::class)->middleware('role:admin,petugas');
+
+    // 
+    Route::get('/reports', [DashboardReportController::class, 'index'])->middleware('role:admin')->name('reports');
 });
 
 // 
