@@ -36,6 +36,54 @@
         </div>
         <!-- content:end -->
     </div>
+
+    <!-- modal -->
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span class="nama-kapal"></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="form-group row my-1 ">
+                            <label class="col-sm-4 text-md-end col-form-label">Nama Kapal</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <svg class="bi icon" width="16" height="16" fill="currentColor">
+                                            <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person-fill') }}"/>
+                                        </svg>
+                                    </span>
+                                    <input type="text" name="ship" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row my-1 ">
+                            <label class="col-sm-4 text-md-end col-form-label">Tanggal</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <svg class="bi icon" width="16" height="16" fill="currentColor">
+                                            <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#calendar-fill') }}"/>
+                                        </svg>
+                                    </span>
+                                    <input type="text" name="date" class="form-control" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ok</button>
+                    {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('styles-library')
@@ -106,15 +154,47 @@
                     {
                         title: 'Total Penumpang',
                         data: 'pax'
-                    }
+                    },
+                    {
+                        title: '...',
+                        data: null,
+                        render: (data, type, row) => {
+                            return `
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary" type="button"
+                                    onclick="showModal('${data.id}', '${data.ship.name}', '${data.date}')">
+                                    <i class="bi bi-search"></i>
+                                    <div class="d-inline-block ml-4">Detail</div>
+                                </button>
+                            </div>
+                            `
+                        }
+                    },
                 ]
             });
+        }
+
+        // init modal
+        var modal, modalEl = document.getElementById('modal')
+        const initModal = () => {
+            modal = new bootstrap.Modal(modalEl, {})
+            showModal(1, 'Kapal', '1-2-2021')
+        }
+        const showModal = (id, ship, date) => {
+            const title = modalEl.querySelector('.nama-kapal')
+            const inputShip = modalEl.querySelector('input[name="ship"]')
+            const inputDate = modalEl.querySelector('input[name="date"]')
+            title.innerHTML = `${ship} [${date}]`
+            inputShip.value = `${ship}`
+            inputDate.value = `${date}`
+            modal.toggle()
         }
 
 
         // init
         document.addEventListener('DOMContentLoaded', function () {
             initTable()
+            initModal()
         })
     </script>
 @endpush
