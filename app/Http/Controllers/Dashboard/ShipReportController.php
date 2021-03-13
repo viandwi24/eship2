@@ -9,10 +9,14 @@ use App\Models\ShipReport;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class ShipReportController extends Controller
 {
+    public $folder = 'app/data_laporan/';
     /**
      * Display a listing of the resource.
      *
@@ -63,6 +67,8 @@ class ShipReportController extends Controller
             'count_security_forces' => 'required|numeric|min:0',
             'count_vehicle_wheel_2' => 'required|numeric|min:0',
             'count_vehicle_wheel_4' => 'required|numeric|min:0',
+            'photo_embarkation' => 'required|file|mimes:png,jpeg,jpg,bmp',
+            'photo_departure' => 'required|file|mimes:png,jpeg,jpg,bmp',
         ]);
 
         // 
@@ -70,8 +76,22 @@ class ShipReportController extends Controller
         $data['date'] = Carbon::parse($request->date);
         $data['time'] = Carbon::parse($request->time)->format('H:i');
 
-        // 
-        $created = ShipReport::create($data);
+        DB::transaction(function () use ($request, $data) {
+            // 
+            $file_photo_embarkation = $request->photo_embarkation;
+            $file_photo_embarkation_name = Str::random(200) . '.' . $file_photo_embarkation->getClientOriginalExtension();
+            $file_photo_embarkation->storeAs('data_laporan', $file_photo_embarkation_name);
+            $data['photo_embarkation'] = $file_photo_embarkation_name;
+
+            // 
+            $file_photo_departure = $request->photo_departure;
+            $file_photo_departure_name = Str::random(200) . '.' . $file_photo_departure->getClientOriginalExtension();
+            $file_photo_departure->storeAs('data_laporan', $file_photo_departure_name);
+            $data['photo_departure'] = $file_photo_departure_name;
+
+            // 
+            $created = ShipReport::create($data);
+        });
 
         return redirect()->route('ship-reports.index')->with('message', ['type' => 'success', 'text' => 'Berhasil menambahkan data baru.']);
     }
@@ -82,9 +102,10 @@ class ShipReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ShipReport $shipReport)
     {
-        //
+        if (isset($_GET['view_photo_embarkation'])) return response()->file(storage_path($this->folder . $shipReport->photo_embarkation));
+        if (isset($_GET['view_photo_departure'])) return response()->file(storage_path($this->folder . $shipReport->photo_departure));
     }
 
     /**
@@ -110,7 +131,7 @@ class ShipReportController extends Controller
      */
     public function update(Request $request, ShipReport $shipReport)
     {
-        $request->validate([
+        $rules = [
             'user_id' => 'required|numeric',
             'ship_id' => 'required|numeric',
             'route_id' => 'required|numeric',
@@ -121,15 +142,36 @@ class ShipReportController extends Controller
             'count_security_forces' => 'required|numeric|min:0',
             'count_vehicle_wheel_2' => 'required|numeric|min:0',
             'count_vehicle_wheel_4' => 'required|numeric|min:0',
-        ]);
+        ];
+        if ($request->hasFile('photo_embarkation')) $rules['photo_embarkation'] = 'required|file|mimes:png,jpeg,jpg,bmp';
+        if ($request->hasFile('photo_departure')) $rules['photo_departure'] = 'required|file|mimes:png,jpeg,jpg,bmp';
+        $request->validate($rules);
+        if ($request->hasFile('photo_embarkation')) $this->checkAndDeleteFile($shipReport, 'photo_embarkation');
+        if ($request->hasFile('photo_departure')) $this->checkAndDeleteFile($shipReport, 'photo_departure');
 
         // 
-        $data = $request->all();
-        $data['date'] = Carbon::parse($request->date);
-        $data['time'] = Carbon::parse($request->time)->format('H:i');
+        DB::transaction(function () use ($request, $shipReport, &$data) {
+            $data = $request->all();
+            $data['date'] = Carbon::parse($request->date);
+            $data['time'] = Carbon::parse($request->time)->format('H:i');
+            if ($request->hasFile('photo_embarkation'))
+            {
+                $file_photo_embarkation = $request->photo_embarkation;
+                $file_photo_embarkation_name = Str::random(200) . '.' . $file_photo_embarkation->getClientOriginalExtension();
+                $file_photo_embarkation->storeAs('data_laporan', $file_photo_embarkation_name);
+                $data['photo_embarkation'] = $file_photo_embarkation_name;
+            }
+            if ($request->hasFile('photo_departure'))
+            {
+                $file_photo_departure = $request->photo_departure;
+                $file_photo_departure_name = Str::random(200) . '.' . $file_photo_departure->getClientOriginalExtension();
+                $file_photo_departure->storeAs('data_laporan', $file_photo_departure_name);
+                $data['photo_departure'] = $file_photo_embarkation_name;
+            }
 
-        // 
-        $created = $shipReport->update($data);
+            // 
+            $created = $shipReport->update($data);
+        });
 
         return redirect()->route('ship-reports.index')->with('message', ['type' => 'success', 'text' => 'Berhasil memperbarui data baru.']);
     }
@@ -142,7 +184,22 @@ class ShipReportController extends Controller
      */
     public function destroy(ShipReport $shipReport)
     {
-        $deleted = $shipReport->delete();
+        DB::transaction(function () use ($shipReport) {
+            $this->checkAndDeleteFile($shipReport, 'photo_embarkation');
+            $this->checkAndDeleteFile($shipReport, 'photo_departure');
+            $deleted = $shipReport->delete();
+        });
         return redirect()->route('ship-reports.index')->with('message', ['type' => 'success', 'text' => 'Berhasil menghapus data.']);
+    }
+
+    private function checkAndDeleteFile(ShipReport $shipReport, $column)
+    {
+        if ($shipReport[$column] != null) {
+            try {
+                Storage::delete($this->folder . $shipReport[$column]);
+                unlink(storage_path($this->folder . $shipReport[$column]));
+            } catch (\Throwable $th) {
+            }
+        }
     }
 }

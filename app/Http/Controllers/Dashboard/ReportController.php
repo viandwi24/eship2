@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\ShipOperation;
 use App\Models\ShipReport;
+use App\Models\Weather;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class ReportController extends Controller
@@ -18,7 +21,9 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax())
+        $ajax = $request->ajax();
+        // $ajax = true;
+        if ($ajax)
         {
             $eloquent = ShipOperation::with('ship');
             return DataTables::of($eloquent)
@@ -37,6 +42,21 @@ class ReportController extends Controller
                             + $item->count_security_forces;
                     }
                     return $pax;
+                })
+                ->addColumn('weather', function (ShipOperation $shipOperation) {
+                    $date = $shipOperation->date;
+                    $weather = Weather::whereDate(DB::raw('DATE(date_start)'), '<=', Carbon::parse($date)->toDateString())
+                        ->whereDate(DB::raw('DATE(date_end)'), '>=', $date)
+                        ->first();
+                    return $weather;
+                })
+                ->filter(function (Builder $q) use ($request) {
+                    if ($request->has('date_start')) {
+                        $q->whereDate(DB::raw('DATE(date)'), '>=', Carbon::parse($request->date_start)->toDateString());
+                    }
+                    if ($request->has('date_end')) {
+                        $q->whereDate(DB::raw('DATE(date)'), '<=', Carbon::parse($request->date_end)->toDateString());
+                    }
                 })
                 ->make(true);
         }

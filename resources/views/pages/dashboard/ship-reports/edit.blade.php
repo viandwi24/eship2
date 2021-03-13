@@ -36,7 +36,7 @@
                         <!-- flush message error -->
                         <x-message />
                         <!-- flush message error:end -->
-                        <form action="{{ route('ship-reports.update', ['ship_report' => $shipReport->id]) }}" method="POST" autocomplete="off">
+                        <form action="{{ route('ship-reports.update', ['ship_report' => $shipReport->id]) }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group row my-2">
@@ -191,6 +191,30 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="form-group row my-2">
+                                <label class="col-sm-4 col-form-label text-md-end">Foto Embarkasi</label>
+                                <div class="col-md-4">
+                                    @if ($shipReport->photo_embarkation == null)
+                                        <div class="tw-block tw-border-gray-300 tw-border-2 tw-text-center tw-relative" style="height: 100px;"><span style="position: absolute;top: 50%;transform: translate(-50%,-50%);">Belum ada foto.</span></div>
+                                    @else
+                                        <img src="{{ route('ship-reports.show', ['ship_report' => $shipReport->id]) }}?view_photo_embarkation" alt="Foto" class="tw-border-gray-300 tw-border-2" id="preview_photo_embarkation">
+                                    @endif
+                                    <input type="file" name="photo_embarkation" class="form-control mt-2">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="form-group row my-2">
+                                <label class="col-sm-4 col-form-label text-md-end">Foto Pemberangkatan</label>
+                                <div class="col-md-4">
+                                    @if ($shipReport->photo_embarkation == null)
+                                        <div class="tw-block tw-border-gray-300 tw-border-2 tw-text-center tw-relative" style="height: 100px;"><span style="position: absolute;top: 50%;transform: translate(-50%,-50%);">Belum ada foto.</span></div>
+                                    @else
+                                        <img src="{{ route('ship-reports.show', ['ship_report' => $shipReport->id]) }}?view_photo_departure" alt="Foto" class="tw-border-gray-300 tw-border-2" id="preview_photo_departure">
+                                    @endif
+                                    <input type="file" name="photo_departure" class="form-control mt-2">
+                                </div>
+                            </div>
                             <div class="form-group row my-2">
                                 <div class="offset-md-4 col-md-4">
                                     <button class="btn btn-primary">
@@ -241,10 +265,30 @@
             })
         }
 
+        // 
+        function readURL(input, previewQuery) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $(previewQuery).attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        const initInputFile = () => {
+            $("input[name='photo_embarkation']").change(function() {
+                readURL(this, '#preview_photo_embarkation');
+            });
+            $("input[name='photo_departure']").change(function() {
+                readURL(this, '#preview_photo_departure');
+            });
+        }
+
         // init
         document.addEventListener('DOMContentLoaded', function () {
             initDatepicker()
             initChoices()
+            initInputFile()
         })
     </script>
 @endpush

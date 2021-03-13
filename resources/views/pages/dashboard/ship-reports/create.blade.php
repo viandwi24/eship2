@@ -36,7 +36,7 @@
                         <!-- flush message error -->
                         <x-message />
                         <!-- flush message error:end -->
-                        <form action="{{ route('ship-reports.store') }}" method="POST" autocomplete="off">
+                        <form action="{{ route('ship-reports.store') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Nama Petugas</label>
@@ -119,7 +119,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#calendar-fill') }}"/>
                                             </svg>
                                         </span>
-                                        <input class="form-control timepicker" name="time" placeholder="Jam" autocomplete="off">
+                                        <input class="form-control timepicker" name="time" placeholder="Jam" autocomplete="off" value="{{ old('date', \Carbon\Carbon::now()->format('H:i')) }}">
                                     </div>
                                 </div>
                             </div>
@@ -190,6 +190,19 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
+                            <div class="form-group row my-2">
+                                <label class="col-sm-4 col-form-label text-md-end">Foto Embarkasi</label>
+                                <div class="col-md-4">
+                                    <input type="file" name="photo_embarkation" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row my-2">
+                                <label class="col-sm-4 col-form-label text-md-end">Foto Pemberangkatan</label>
+                                <div class="col-md-4">
+                                    <input type="file" name="photo_departure" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group row my-2">
                                 <div class="offset-md-4 col-md-4">
                                     <button class="btn btn-primary">
@@ -224,17 +237,6 @@
     <script>
         // datepicker
         const initDatepicker = () => {
-            // const els = document.querySelectorAll('.datepicker')
-            // els.forEach((el) => new Pikaday({
-            //     field: el,
-            //     format: 'd-m-Y',
-            //     toString(date, format) {
-            //         const day = ('0' + date.getDate()).slice(-2);
-            //         const month = ('0' + (date.getMonth() + 1)).slice(-2);
-            //         const year = date.getFullYear();
-            //         return `${day}-${month}-${year}`;
-            //     },
-            // }))
             $('.datepicker').datepicker({
                 orientation: 'bottom'
             })
