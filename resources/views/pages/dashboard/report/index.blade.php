@@ -34,17 +34,27 @@
                                 <div class="form-group row my-2">
                                     <label class="col-sm-4 col-form-label text-md-end">Tanggal :</label>
                                     <div class="col-md-4">
-                                        <div class="input-group">
-                                            <span class="input-group-text">
-                                                <svg class="bi icon" width="16" height="16" fill="currentColor">
-                                                    <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#calendar-fill') }}"/>
-                                                </svg>
-                                            </span>
-                                            <input class="form-control datepicker" data-date-format="dd-mm-yyyy" id="filter-date-start" placeholder="Tanggal" autocomplete="off" value="{{ \Carbon\Carbon::now()->firstOfMonth()->format('d-m-Y') }}">
-                                            <span class="input-group-text">
-                                                -   
-                                            </span>
-                                            <input class="form-control datepicker" data-date-format="dd-mm-yyyy" id="filter-date-end" placeholder="Tanggal" autocomplete="off" value="{{ \Carbon\Carbon::now()->lastOfMonth()->format('d-m-Y') }}">
+                                        <div class="row">
+                                            <div class="col-lg-5 col-sm-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <svg class="bi icon" width="16" height="16" fill="currentColor">
+                                                            <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#calendar') }}"/>
+                                                        </svg>
+                                                    </span>
+                                                    <input class="form-control datepicker" data-date-format="dd-mm-yyyy" id="filter-date-start" placeholder="Tanggal" autocomplete="off" value="{{ \Carbon\Carbon::now()->firstOfMonth()->format('d-m-Y') }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 col-sm-12">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">
+                                                        <svg class="bi icon" width="16" height="16" fill="currentColor">
+                                                            <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#calendar-fill') }}"/>
+                                                        </svg>
+                                                    </span>
+                                                    <input class="form-control datepicker" data-date-format="dd-mm-yyyy" id="filter-date-end" placeholder="Tanggal" autocomplete="off" value="{{ \Carbon\Carbon::now()->lastOfMonth()->format('d-m-Y') }}">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

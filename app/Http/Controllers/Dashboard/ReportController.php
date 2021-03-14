@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Route;
+use App\Models\Ship;
 use App\Models\ShipOperation;
 use App\Models\ShipReport;
 use App\Models\Weather;
@@ -68,64 +70,66 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function export()
     {
-        //
-    }
+        $date_start = Carbon::now()->firstOfMonth();
+        $date_end = Carbon::now()->lastOfMonth();
+        $date_start_string = Carbon::parse($date_start->format('d-m-Y'))->toDateString();
+        $date_en_string = Carbon::parse($date_end->format('d-m-Y'))->toDateString();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // 
+        $reports = [];
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        // 
+        $routes = Route::select('id', 'departure', 'arrival')->get();
+        $ships = Ship::select('id', 'name')->get();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        // 
+        $ships_arr = [];
+        $ships->each(function ($val, $key) use (&$ships_arr) {
+            $arr = $val->toArray();
+            $ships_arr[] = $arr;
+        });
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        // 
+        $diffDays = $date_start->diffInDays($date_end)+1;
+        $current = $date_start;
+        for ($i=0; $i < $diffDays; $i++) { 
+            $routes_arr = [];
+            $routes->each(function ($val, $key) use (&$routes_arr, $ships_arr) {
+                $arr = $val->toArray();
+                $arr['ships'] = $ships_arr;
+                $routes_arr[] = $arr;
+            });
+            $reports[] = [
+                'date' => $date_start->format('d-m-Y'),
+                'routes' => $routes_arr
+            ];
+            $current->addDays(1);
+        }
+        return ($reports);
+        
+        // // 
+        // $shipOperations = ShipOperation::with('ship')
+        //         ->whereBetween('date', [$date_start, $date_end])
+        //         ->get()
+        //         ->toArray();
+        // foreach ($shipOperations as $key => $val) { $shipOperations[$key]['date'] = Carbon::parse($val['date'])->format('d-m-Y'); }
+        
+        // // 
+        // $shipReports = ShipReport::with('ship')
+        //         ->whereBetween('date', [$date_start, $date_end])
+        //         ->get()
+        //         ->toArray();
+        // foreach ($shipReports as $key => $val) { $shipReports[$key]['date'] = Carbon::parse($val['date'])->format('d-m-Y'); }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        // // 
+        // foreach ($shipReports as $shipReport)
+        // {
+        //     $found = array_search($shipReport['date'], array_column($shipOperations, 'date'));
+        //     if ($found != false) $shipOperations[$found]['reports'][] = $shipReport;
+        // }
+
+        // return $shipOperations;
     }
 }

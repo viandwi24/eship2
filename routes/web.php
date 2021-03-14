@@ -44,6 +44,7 @@ Route::group([
 
     // 
     Route::get('/reports', [DashboardReportController::class, 'index'])->middleware('role:admin')->name('reports');
+    Route::get('/reports/export', [DashboardReportController::class, 'export'])->middleware('role:admin')->name('reports.export');
 });
 
 // 
