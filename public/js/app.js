@@ -5144,7 +5144,7 @@ var loading = {
 }; // 
 
 var initLinkLoading = function initLinkLoading() {
-  var menuLink = document.querySelectorAll('a');
+  var menuLink = document.querySelectorAll('a:not(.no-loader)');
   menuLink.forEach(function (e) {
     return e.addEventListener('click', /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(item) {

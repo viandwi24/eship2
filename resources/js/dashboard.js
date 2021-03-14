@@ -117,7 +117,7 @@ const loading = {
 
 // 
 const initLinkLoading = function() {
-    const menuLink = document.querySelectorAll('a')
+    const menuLink = document.querySelectorAll('a:not(.no-loader)')
     menuLink.forEach((e) => e.addEventListener('click', async (item) => {
       const href = e.getAttribute('href')
       if (href != null) {

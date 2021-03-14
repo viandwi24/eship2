@@ -8,13 +8,18 @@ use Maatwebsite\Excel\Concerns\FromView;
 
 class ShipReportsExport implements FromView
 {
+    public $reportData = [];
+    
+    
+    public function __construct($reportData = []) {
+        $this->reportData = $reportData;
+    }
+
     /**
     * @return \Illuminate\Contracts\View\View
     */
     public function view(): View
     {
-        // return view('exports.invoices', [
-        //     'invoices' => Invoice::all()
-        // ]);
+        return view('excels.ship-report', $this->reportData);
     }
 }

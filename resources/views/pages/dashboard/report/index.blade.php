@@ -11,6 +11,9 @@
                     Laporan
                 </div>
                 <div class="actions">
+                    <a href="{{ route('reports.export') }}" class="btn btn-secondary no-loader" target="_blank">
+                        Export .xls
+                    </a>
                 </div>
             </div>
             <nav aria-label="breadcrumb">
