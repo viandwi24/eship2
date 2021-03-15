@@ -21,7 +21,7 @@
                 <div class="tw-mt-4 lg:tw-mt-12 tw-bg-blue-100 tw-block tw-rounded-xl lg:tw-py-8 lg:tw-px-10 tw-py-6 tw-px-8">
                     <div class="tw-block lg:tw-flex">
                         <div class="tw-text lg:tw-w-6/12 tw-w-full">
-                            <span class="tw-font-bold tw-text-2xl tw-text-blue-600">Welcome back Alfian!</span>
+                            <span class="tw-font-bold tw-text-2xl tw-text-blue-600">Welcome back {{ Auth::user()->name }}!</span>
                             <p class="tw-pt-4 tw-text-lg tw-text-gray-800">
                                 You've learned 80% of your goal this week!<br>
                                 Keep it up and improve your results!
@@ -36,44 +36,103 @@
             <!-- welcome-card:end -->
             <section id="panel">
                 <div class="row my-4">
-                    @for ($i = 0; $i < 4; $i++)
-                        <div class="col-lg-3">
+                    @foreach ($routes as $route)
+                        <div class="col-lg-6">
                             <div class="panel panel-primary">
                                 <div class="overlay"></div>
-                                <div class="icon">
-                                    <svg class="bi icon" width="24" height="24" fill="currentColor">
-                                        <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person') }}"/>
-                                    </svg>
-                                </div>
-                                <div class="content">
-                                    <div class="main">1.0000</div>
-                                    <div class="title">Customer</div>
-                                    <a href="sales-customer.html" class="link">
-                                        <i data-feather="arrow-right"></i>
-                                    </a>
+                                <div class="content text-center">
+                                    <div class="title">{{ $route->departure }}-{{ $route->arrival }}</div>
                                 </div>
                             </div>
                         </div>
-                    @endfor
+                    @endforeach
+                </div>
+            </section>
+            <!-- summary:end -->
+            <section id="panel">
+                <div class="row my-4">
+                    @foreach ($routes as $route)
+                        <div class="col-lg-6">
+                            <div class="panel panel-primary">
+                                <div class="overlay"></div>
+                                <div class="content text-center mx-4">
+                                    <div class="title row">
+                                        <div class="col-12">
+                                            <div class="tw-text-2xl mb-4">
+                                                Jumlah PNP Di Bulan {{ \Carbon\Carbon::now()->format('F Y') }}
+                                            </div>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <div class="d-inline">
+                                                <svg class="bi icon d-inline" width="54" height="54" fill="currentColor">
+                                                    <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person-fill') }}"/>
+                                                </svg>
+                                            </div>
+                                            <div>Dewasa</div>
+                                            <div class="tw-text-xl">100</div>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <div class="d-inline">
+                                                <svg class="bi icon d-inline" width="54" height="54" fill="currentColor">
+                                                    <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person-fill') }}"/>
+                                                </svg>
+                                            </div>
+                                            <div>Bayi</div>
+                                            <div class="tw-text-xl">100</div>
+                                        </div>
+                                        <div class="col-2 text-center">
+                                            <div class="d-inline">
+                                                <svg class="bi icon d-inline" width="54" height="54" fill="currentColor">
+                                                    <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#person-fill') }}"/>
+                                                </svg>
+                                            </div>
+                                            <div>Anggota</div>
+                                            <div class="tw-text-xl">100</div>
+                                        </div>
+                                        <div class="col-3 text-center">
+                                            <div class="d-inline">
+                                                <svg class="bi icon d-inline" width="54" height="54" fill="currentColor">
+                                                    <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#minecart') }}"/>
+                                                </svg>
+                                            </div>
+                                            <div>Roda 2</div>
+                                            <div class="tw-text-xl">100</div>
+                                        </div>
+                                        <div class="col-3 text-center">
+                                            <div class="d-inline">
+                                                <svg class="bi icon d-inline" width="54" height="54" fill="54">
+                                                    <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#minecart') }}"/>
+                                                </svg>
+                                            </div>
+                                            <div>Roda 4</div>
+                                            <div class="tw-text-xl">100</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </section>
             <!-- chart -->
             <section id="chart">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="card card-custom">
-                            <div class="card-header">
-                                <h3 class="card-title">
-                                    <span class="fw-bolder tw-text-gray-700 fs-5">
-                                        Cash Flow
-                                    </span>
-                                </h3>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="chartCashFlow" width="400" height="300"></canvas>
+                    @foreach ($routes as $route)
+                        <div class="col-lg-6">
+                            <div class="card card-custom">
+                                <div class="card-header">
+                                    <h3 class="card-title">
+                                        <span class="fw-bolder tw-text-gray-700 fs-5">
+                                            Load Factor ({{ $route->departure }}-{{ $route->arrival }})
+                                        </span>
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="chartCashFlow" width="400" height="300"></canvas>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </section>
         </div>

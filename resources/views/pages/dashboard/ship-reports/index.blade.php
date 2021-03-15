@@ -62,7 +62,7 @@
                 ajax: route,
                 responsive: true,
                 autoWidth: false,
-                order: [[0, 'asc']],
+                order: [[3, 'desc']],
                 columnDefs: [
                     { orderable: false, targets: [6] }
                 ],

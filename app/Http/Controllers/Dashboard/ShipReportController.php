@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Route;
 use App\Models\Ship;
+use App\Models\ShipOperation;
 use App\Models\ShipReport;
 use App\Models\User;
 use Carbon\Carbon;
@@ -42,7 +43,8 @@ class ShipReportController extends Controller
      */
     public function create()
     {
-        $ships = Ship::all();
+        $allowed_ships = ShipOperation::whereDate('date', Carbon::parse(Carbon::now())->toDateString())->get()->pluck('ship_id');
+        $ships = Ship::whereIn('id', $allowed_ships)->get();
         $petugas_users = User::where('role', 'Petugas')->get();
         $routes = Route::all();
         return view('pages.dashboard.ship-reports.create', compact('ships', 'petugas_users', 'routes'));
@@ -56,7 +58,7 @@ class ShipReportController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'user_id' => 'required|numeric',
             'ship_id' => 'required|numeric',
             'route_id' => 'required|numeric',
@@ -67,9 +69,17 @@ class ShipReportController extends Controller
             'count_security_forces' => 'required|numeric|min:0',
             'count_vehicle_wheel_2' => 'required|numeric|min:0',
             'count_vehicle_wheel_4' => 'required|numeric|min:0',
-            'photo_embarkation' => 'required|file|mimes:png,jpeg,jpg,bmp',
-            'photo_departure' => 'required|file|mimes:png,jpeg,jpg,bmp',
-        ]);
+        ];
+        if ($request->hasFile('photo_embarkation')) $rules['photo_embarkation'] = 'required|file|mimes:png,jpeg,jpg,bmp';
+        if ($request->hasFile('photo_departure')) $rules['photo_departure'] = 'required|file|mimes:png,jpeg,jpg,bmp';
+        $request->validate($rules);
+
+        // checking 
+        $tmp = ShipReport::whereDate('date', Carbon::parse(Carbon::now())->toDateString())->where('ship_id', $request->ship_id)->get();
+        if (count($tmp) > 0)
+        {
+            return redirect()->route('ship-reports.index')->with('message', ['type' => 'danger', 'text' => 'Kapal yang anda pilih hari ini telah memiliki laporan.']);
+        }
 
         // 
         $data = $request->all();
@@ -78,16 +88,22 @@ class ShipReportController extends Controller
 
         DB::transaction(function () use ($request, $data) {
             // 
-            $file_photo_embarkation = $request->photo_embarkation;
-            $file_photo_embarkation_name = Str::random(200) . '.' . $file_photo_embarkation->getClientOriginalExtension();
-            $file_photo_embarkation->storeAs('data_laporan', $file_photo_embarkation_name);
-            $data['photo_embarkation'] = $file_photo_embarkation_name;
+            if ($request->hasFile('photo_embarkation'))
+            {
+                $file_photo_embarkation = $request->photo_embarkation;
+                $file_photo_embarkation_name = Str::random(200) . '.' . $file_photo_embarkation->getClientOriginalExtension();
+                $file_photo_embarkation->storeAs('data_laporan', $file_photo_embarkation_name);
+                $data['photo_embarkation'] = $file_photo_embarkation_name;
+            }
 
             // 
-            $file_photo_departure = $request->photo_departure;
-            $file_photo_departure_name = Str::random(200) . '.' . $file_photo_departure->getClientOriginalExtension();
-            $file_photo_departure->storeAs('data_laporan', $file_photo_departure_name);
-            $data['photo_departure'] = $file_photo_departure_name;
+            if ($request->hasFile('photo_departure'))
+            {
+                $file_photo_departure = $request->photo_departure;
+                $file_photo_departure_name = Str::random(200) . '.' . $file_photo_departure->getClientOriginalExtension();
+                $file_photo_departure->storeAs('data_laporan', $file_photo_departure_name);
+                $data['photo_departure'] = $file_photo_departure_name;
+            }
 
             // 
             $created = ShipReport::create($data);
