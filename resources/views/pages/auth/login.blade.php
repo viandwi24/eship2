@@ -9,12 +9,13 @@
         </div>
         <div class="main">
             <div class="background-overlay">
-                <img src="{{ asset('img/logo-gresik.png') }}" class="m-4">
+                <img src="{{ asset('icons/Logo Gresik.png') }}" width="86px" class="m-4 d-inline">
+                <img src="{{ asset('icons/Tulisan Kab Gresik.png') }}" width="280px" class="m-4 d-inline pt-2">
             </div>
             <div class="login-panel">
                 <div class="panel-container">
                     <div class="header text-center">
-                        <img src="{{ asset('img/logo-dishub.png') }}" width="84px" class="d-inline">
+                        <img src="{{ asset('icons/Logo Dishub.png') }}" width="84px" class="d-inline">
                     </div>
                     <div class="form">
                         <div class="title">LOGIN</div>
@@ -45,7 +46,7 @@
                         </form>
                     </div>
                     <div class="footer text-center">
-                        <img src="{{ asset('img/logo-app.png') }}" width="84px" class="d-inline">
+                        <img src="{{ asset('icons/Logo App.png') }}" width="64px" class="d-inline">
                     </div>
                 </div>
             </div>

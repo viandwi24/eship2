@@ -35,4 +35,9 @@ class ShipOperation extends Model
     {
         return $this->belongsTo(Ship::class);
     }
+
+    public function weather()
+    {
+        return $this->hasOne(Weather::class);
+    }
 }

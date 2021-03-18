@@ -67,7 +67,7 @@
                     { orderable: false, targets: [6] }
                 ],
                 columns: [
-                    { title: '#', data: 'id', render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                    { title: '#', data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
                     {
                         title: 'Kapal',
                         data: 'ship.name'

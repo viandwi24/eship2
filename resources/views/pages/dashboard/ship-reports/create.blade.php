@@ -80,7 +80,7 @@
                                 </div>
                             </div>
                             <div class="form-group row my-2">
-                                <label class="col-sm-4 col-form-label text-md-end">Rute</label>
+                                <label class="col-sm-4 col-form-label text-md-end">Pemberangkatan</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <span class="input-group-text">
@@ -89,9 +89,12 @@
                                             </svg>
                                         </span>
                                         <select name="route_id" class="choices form-select">
-                                            <option value="">--Pilih Rute--</option>
+                                            <option value="">--Pilih Pelabuhan--</option>
                                             @foreach ($routes as $item)
-                                                <option value="{{ $item->id }}">{{ $item->departure }}-{{ $item->arrival }}</option>                                                
+                                                <option value="{{ $item->id }}">
+                                                    {{ $item->departure }}
+                                                    {{-- -{{ $item->arrival }} --}}
+                                                </option>                                                
                                             @endforeach
                                         </select>
                                     </div>
@@ -125,6 +128,13 @@
                             </div>
                             <hr>
                             <div class="form-group row my-2">
+                                <div class="offset-md-4 col-md-4">
+                                    <div class="alert alert-danger" role="alert" id="alertPaxMax" style="display: none;">
+                                        Total Maksimum Penumpang adalah : <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Jumlah Orang Dewasa</label>
                                 <div class="col-md-4">
                                     <div class="input-group">
@@ -133,7 +143,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#sort-numeric-down') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="number" min="0" name="count_adult" class="form-control" autocomplete="off" value="{{ old('count_adult', 0) }}">
+                                        <input type="number" min="0" name="count_adult" class="form-control" autocomplete="off" value="{{ old('count_adult') }}" placeholder="Isi jumlah orang dewasa...">
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +156,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#sort-numeric-down') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="number" min="0" name="count_baby" class="form-control" autocomplete="off" value="{{ old('count_baby', 0) }}">
+                                        <input type="number" min="0" name="count_baby" class="form-control" autocomplete="off" value="{{ old('count_baby') }}" placeholder="Isi jumlah bayi...">
                                     </div>
                                 </div>
                             </div>
@@ -159,11 +169,18 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#sort-numeric-down') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="number" min="0" name="count_security_forces" class="form-control" autocomplete="off" value="{{ old('count_security_forces', 0) }}">
+                                        <input type="number" min="0" name="count_security_forces" class="form-control" autocomplete="off" value="{{ old('count_security_forces') }}" placeholder="Isi jumlah anggota...">
                                     </div>
                                 </div>
                             </div>
                             <hr>
+                            <div class="form-group row my-2">
+                                <div class="offset-md-4 col-md-4">
+                                    <div class="alert alert-danger" role="alert" id="alertVehicle2Max" style="display: none;">
+                                        Total Maksimum Kendaraan 2 adalah : <span></span>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Jumlah Kendaraan Roda 2</label>
                                 <div class="col-md-4">
@@ -173,7 +190,14 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#sort-numeric-down') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="number" min="0" name="count_vehicle_wheel_2" class="form-control" autocomplete="off" value="{{ old('count_vehicle_wheel_2', 0) }}">
+                                        <input type="number" min="0" name="count_vehicle_wheel_2" class="form-control" autocomplete="off" value="{{ old('count_vehicle_wheel_2') }}" placeholder="Isi jumlah kendaraan roda 2...">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row my-2">
+                                <div class="offset-md-4 col-md-4">
+                                    <div class="alert alert-danger" role="alert" id="alertVehicle4Max" style="display: none;">
+                                        Total Maksimum Kendaraan 4 adalah : <span></span>
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +210,7 @@
                                                 <use xlink:href="{{ asset('img/icon/bootstrap-icons.svg#sort-numeric-down') }}"/>
                                             </svg>
                                         </span>
-                                        <input type="number" min="0" name="count_vehicle_wheel_4" class="form-control" autocomplete="off" value="{{ old('count_vehicle_wheel_4', 0) }}">
+                                        <input type="number" min="0" name="count_vehicle_wheel_4" class="form-control" autocomplete="off" value="{{ old('count_vehicle_wheel_4') }}" placeholder="Isi jumlah kendaraan roda 4...">
                                     </div>
                                 </div>
                             </div>
@@ -235,6 +259,95 @@
 
 @push('scripts')
     <script>
+        // initShipMax
+        var shipSelected = null;
+        var totalPax = 0, 
+            countAdult = 0,
+            countBaby = 0,
+            countSecurityForces = 0,
+            countVehicleWheel2 = 0,
+            countVehicleWheel4 = 0
+
+        const initShipMax = () => {
+            const ships = JSON.parse(JSON.stringify({!! json_encode($ships, JSON_HEX_TAG) !!}))
+            const shipSelect = document.querySelector('select[name="ship_id"]')
+            const inputCountAdult = document.querySelector('input[name="count_adult"]')
+            const inputCountBaby = document.querySelector('input[name="count_baby"]')
+            const inputCountSecurityForces = document.querySelector('input[name="count_security_forces"]')
+            const inputCountVehicleWheel2 = document.querySelector('input[name="count_vehicle_wheel_2"]')
+            const inputCountVehicleWheel4 = document.querySelector('input[name="count_vehicle_wheel_4"]')
+
+            shipSelect.addEventListener('change', () => {
+                var found = null
+                ships.forEach(e => {
+                    if (e.id == shipSelect.value) {
+                        found = e
+                    }
+                })
+                if (found == null) return shipSelected = null
+                shipSelected = found
+                countAdult = 0
+                countBaby = 0
+                countSecurityForces = 0
+                check()
+            })
+
+            //
+            const check = () => {
+                if (shipSelected != null) {
+                    // pax
+                    totalPax = countAdult + countBaby + countSecurityForces
+                    const alertPaxMax = document.querySelector('#alertPaxMax')
+                    if (totalPax > shipSelected.max_pax) {
+                        alertPaxMax.style.display = 'block'
+                        alertPaxMax.querySelector('span').innerHTML = shipSelected.max_pax
+                    } else {
+                        alertPaxMax.style.display = 'none'
+                    }
+
+                    // 
+                    const alertVehicle4Max = document.querySelector('#alertVehicle4Max')
+                    if (countVehicleWheel4 > shipSelected.max_vehicle_wheel_4) {
+                        alertVehicle4Max.style.display = 'block'
+                        alertVehicle4Max.querySelector('span').innerHTML = shipSelected.max_vehicle_wheel_4
+                    } else {
+                        alertVehicle4Max.style.display = 'none'
+                    }
+
+                    // 
+                    const alertVehicle2Max = document.querySelector('#alertVehicle2Max')
+                    if (countVehicleWheel2 > shipSelected.max_vehicle_wheel_2) {
+                        alertVehicle2Max.style.display = 'block'
+                        alertVehicle2Max.querySelector('span').innerHTML = shipSelected.max_vehicle_wheel_2
+                    } else {
+                        alertVehicle2Max.style.display = 'none'
+                    }
+                }
+            }
+
+            // 
+            inputCountAdult.addEventListener('change', () => { 
+                countAdult = parseInt(inputCountAdult.value)
+                check()
+            })
+            inputCountBaby.addEventListener('change', () => { 
+                countBaby = parseInt(inputCountBaby.value)
+                check()
+            })
+            inputCountSecurityForces.addEventListener('change', () => { 
+                countSecurityForces = parseInt(inputCountSecurityForces.value)
+                check()
+            })
+            inputCountVehicleWheel2.addEventListener('change', () => { 
+                countVehicleWheel2 = parseInt(inputCountVehicleWheel2.value)
+                check()
+            })
+            inputCountVehicleWheel4.addEventListener('change', () => { 
+                countVehicleWheel4 = parseInt(inputCountVehicleWheel4.value)
+                check()
+            })
+        }
+
         // datepicker
         const initDatepicker = () => {
             $('.datepicker').datepicker({
@@ -257,6 +370,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             initDatepicker()
             initChoices()
+            initShipMax()
         })
     </script>
 @endpush

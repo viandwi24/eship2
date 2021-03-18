@@ -16,6 +16,10 @@ class CreateShipsTable extends Migration
         Schema::create('ships', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('type', ['Kapal Motor', 'Kapal Cepat']);
+            $table->integer('max_pax')->default(0);
+            $table->integer('max_vehicle_wheel_2')->default(0);
+            $table->integer('max_vehicle_wheel_4')->default(0);
             $table->timestamps();
         });
     }

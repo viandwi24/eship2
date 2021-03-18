@@ -17,10 +17,29 @@ class ShipSeeder extends Seeder
      */
     public function run()
     {
-        Ship::create(['name' => 'KM. EXPRESS BAHARI BE']);
-        Ship::create(['name' => 'KM. NATUNA EXPRESS']);
-        Ship::create(['name' => 'KMP. GILIYANG']);
+        Ship::create([
+            'name' => 'KM. EXPRESS BAHARI BE',
+            'type' => 'Kapal Motor',
+            'max_pax' => 100,
+            'max_vehicle_wheel_2' => 30,
+            'max_vehicle_wheel_4' => 20,
+        ]);
+        Ship::create([
+            'name' => 'KM. NATUNA EXPRESS',
+            'type' => 'Kapal Motor',
+            'max_pax' => 150,
+            'max_vehicle_wheel_2' => 10,
+            'max_vehicle_wheel_4' => 10,
+        ]);
+        Ship::create([
+            'name' => 'KMP. GILIYANG',
+            'type' => 'Kapal Motor',
+            'max_pax' => 200,
+            'max_vehicle_wheel_2' => 30,
+            'max_vehicle_wheel_4' => 10,
+        ]);
 
+        return 0;
         // 
         ShipOperation::create([
             'ship_id' => 1,

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ship extends Model
+class ShipSchedules extends Model
 {
     use HasFactory;
 
@@ -15,11 +15,9 @@ class Ship extends Model
      * @var array
      */
     protected $fillable = [
-        'name',
-        'type',
-        'max_pax',
-        'max_vehicle_wheel_2',
-        'max_vehicle_wheel_4'
+        'ship_id',
+        'time',
+        'day',
     ];
 
     /**
@@ -28,11 +26,10 @@ class Ship extends Model
      * @var array
      */
     protected $casts = [
-        // 'schedule' => 'array',
     ];
 
-    public function schedules()
+    public function ship()
     {
-        return $this->hasMany(ShipSchedules::class);
+        return $this->belongsTo(Ship::class);
     }
 }

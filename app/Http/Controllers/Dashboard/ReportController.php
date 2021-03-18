@@ -29,15 +29,19 @@ class ReportController extends Controller
         // $ajax = true;
         if ($ajax)
         {
-            $eloquent = ShipOperation::with('ship');
+            $eloquent = ShipOperation::with('ship', 'weather');
             return DataTables::of($eloquent)
                 ->editColumn('date', function ($q) { return date('d-m-Y', strtotime($q->date)); })  
                 ->addColumn('petugas', function (ShipOperation $shipOperation) {
-                    $petugas = ShipReport::with('user')->where('date', $shipOperation->date)->get();
+                    $petugas = ShipReport::with('user')->where('date', $shipOperation->date)->where('ship_id', $shipOperation->ship_id)->get();
                     return $petugas->pluck('user.name')->unique()->join(', ');
                 })
+                ->addColumn('report_id', function (ShipOperation $shipOperation) {
+                    $report = ShipReport::where('date', $shipOperation->date)->where('ship_id', $shipOperation->ship_id)->first();
+                    return ($report == null) ? null : $report->id;
+                })
                 ->addColumn('pax', function (ShipOperation $shipOperation) {
-                    $reports = ShipReport::where('date', $shipOperation->date)->get();
+                    $reports = ShipReport::where('date', $shipOperation->date)->where('ship_id', $shipOperation->ship_id)->get();
                     $pax = 0;
                     foreach ($reports as $item)
                     {
@@ -46,13 +50,6 @@ class ReportController extends Controller
                             + $item->count_security_forces;
                     }
                     return $pax;
-                })
-                ->addColumn('weather', function (ShipOperation $shipOperation) {
-                    $date = $shipOperation->date;
-                    $weather = Weather::whereDate(DB::raw('DATE(date_start)'), '<=', Carbon::parse($date)->toDateString())
-                        ->whereDate(DB::raw('DATE(date_end)'), '>=', $date)
-                        ->first();
-                    return $weather;
                 })
                 ->filter(function (Builder $q) use ($request) {
                     if ($request->has('date_start')) {
@@ -110,11 +107,13 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function export()
+    public function export(Request $request)
     {
-        $date_start = Carbon::parse('04-03-2021');
+        // dd($request->all());
+        $date_start = Carbon::parse($request->date_start);
+        $date_end = Carbon::parse($request->date_end);
         // $date_start = Carbon::now()->firstOfMonth();
-        $date_end = Carbon::now()->lastOfMonth();
+        // $date_end = Carbon::now()->lastOfMonth();
         $date_start_string = Carbon::parse($date_start->format('d-m-Y'))->toDateString();
         $date_end_string = Carbon::parse($date_end->format('d-m-Y'))->toDateString();
 

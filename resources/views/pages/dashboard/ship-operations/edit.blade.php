@@ -11,7 +11,7 @@
                     Edit Operasi Kapal
                 </div>
                 <div class="actions">
-                    <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('ship-operations.index') }}" class="btn btn-secondary">
                         Batal
                     </a>
                     <button onclick="document.querySelector('form').submit()" class="btn btn-primary">
@@ -36,7 +36,7 @@
                         <!-- flush message error -->
                         <x-message />
                         <!-- flush message error:end -->
-                        <form action="{{ route('ship-operations.update', ['ship_operation' => $shipOperation->id]) }}" method="POST" autocomplete="off">
+                        <form action="{{ route('ship-operations.update', ['ship_operation' => $shipOperation->id]) }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group row my-2">
@@ -105,6 +105,17 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row my-2" id="form-bmkg-group" style="display: none;">
+                                <label class="col-sm-4 col-form-label text-md-end">Data BMKG</label>
+                                <div class="col-md-4">
+                                    <div>
+                                        File Data :
+                                        <a class="no-loader" href="{{ route('ship-operations.index') }}/{{ $shipOperation->id }}?view" target="_blank">Lihat Data (.pdf)</a>
+                                        <span class="tw-text-red-500 tw-text-xs">*Isi File Jika ingin mengganti :</span>
+                                    </div>
+                                    <input type="file" class="form-control" name="file">
+                                </div>
+                            </div>
                             <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Lokasi</label>
                                 <div class="col-md-4">
@@ -161,10 +172,32 @@
             })
         }
 
+        const initCuaca = () => {
+            const status = document.querySelector('select[name="status"]')
+            const description = document.querySelector('select[name="description"]')
+            const form = document.querySelector('#form-bmkg-group')
+            var showUploadCuaca
+            const check = () => {
+                if (status.value == 'Tidak Beroperasi' && description.value == 'Cuaca Buruk') {
+                    form.style.display = 'flex'
+                } else {
+                    form.style.display = 'none'                    
+                }
+            }
+            status.addEventListener('change', function () {
+                check()
+            })
+            description.addEventListener('change', function () {
+                check()
+            })
+            check()
+        }
+
         // init
         document.addEventListener('DOMContentLoaded', function () {
             initDatepicker()
             initChoices()
+            initCuaca()
         })
     </script>
 @endpush

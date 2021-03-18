@@ -43,8 +43,13 @@ class ShipReportController extends Controller
      */
     public function create()
     {
-        $allowed_ships = ShipOperation::whereDate('date', Carbon::parse(Carbon::now())->toDateString())->get()->pluck('ship_id');
-        $ships = Ship::whereIn('id', $allowed_ships)->get();
+        $dont_allowed_ships = ShipOperation::whereDate('date', Carbon::parse(Carbon::now())->toDateString())
+            ->where('status', 'Tidak Beroperasi')
+            ->where('description', 'Cuaca Buruk')
+            ->get()
+            ->pluck('ship_id');
+        $ships = Ship::whereNotIn('id', $dont_allowed_ships)->get();
+        // $ships = Ship::all();
         $petugas_users = User::where('role', 'Petugas')->get();
         $routes = Route::all();
         return view('pages.dashboard.ship-reports.create', compact('ships', 'petugas_users', 'routes'));
@@ -74,17 +79,26 @@ class ShipReportController extends Controller
         if ($request->hasFile('photo_departure')) $rules['photo_departure'] = 'required|file|mimes:png,jpeg,jpg,bmp';
         $request->validate($rules);
 
-        // checking 
-        $tmp = ShipReport::whereDate('date', Carbon::parse(Carbon::now())->toDateString())->where('ship_id', $request->ship_id)->get();
-        if (count($tmp) > 0)
-        {
-            return redirect()->route('ship-reports.index')->with('message', ['type' => 'danger', 'text' => 'Kapal yang anda pilih hari ini telah memiliki laporan.']);
-        }
-
         // 
         $data = $request->all();
         $data['date'] = Carbon::parse($request->date);
         $data['time'] = Carbon::parse($request->time)->format('H:i');
+        $route = Route::findOrFail($request->route_id);
+
+        // checking 
+        $tmp = ShipReport::whereDate('date', Carbon::parse($request->date)->toDateString())->where('ship_id', $request->ship_id)->get();
+        if (count($tmp) > 0) return redirect()->route('ship-reports.index')->with('message', ['type' => 'danger', 'text' => 'Kapal yang anda pilih hari ini telah memiliki laporan.']);
+        $tmp = ShipOperation::whereDate('date', Carbon::parse($request->date)->toDateString())->where('ship_id', $request->ship_id)->get();
+        if (count($tmp) == 0)
+        {
+            $created = ShipOperation::create([
+                'ship_id' => $request->ship_id,
+                'date' => $data['date'],
+                'status' => 'Beroperasi',
+                'description' => 'Aman',
+                'location' => $route->departure,
+            ]);
+        }
 
         DB::transaction(function () use ($request, $data) {
             // 

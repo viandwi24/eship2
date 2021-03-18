@@ -11,7 +11,7 @@
                     Tambah Operasi Kapal
                 </div>
                 <div class="actions">
-                    <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('ship-operations.index') }}" class="btn btn-secondary">
                         Batal
                     </a>
                     <button onclick="document.querySelector('form').submit()" class="btn btn-primary">
@@ -36,7 +36,7 @@
                         <!-- flush message error -->
                         <x-message />
                         <!-- flush message error:end -->
-                        <form action="{{ route('ship-operations.store') }}" method="POST" autocomplete="off">
+                        <form action="{{ route('ship-operations.store') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Nama Kapal</label>
@@ -104,6 +104,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group row my-2" id="form-bmkg-group" style="display: none;">
+                                <label class="col-sm-4 col-form-label text-md-end">Data BMKG</label>
+                                <div class="col-md-4">
+                                    <input type="file" class="form-control" name="file">
+                                </div>
+                            </div>
                             <div class="form-group row my-2">
                                 <label class="col-sm-4 col-form-label text-md-end">Lokasi</label>
                                 <div class="col-md-4">
@@ -148,17 +154,6 @@
     <script>
         // datepicker
         const initDatepicker = () => {
-            // const els = document.querySelectorAll('.datepicker')
-            // els.forEach((el) => new Pikaday({
-            //     field: el,
-            //     format: 'd-m-Y',
-            //     toString(date, format) {
-            //         const day = ('0' + date.getDate()).slice(-2);
-            //         const month = ('0' + (date.getMonth() + 1)).slice(-2);
-            //         const year = date.getFullYear();
-            //         return `${day}-${month}-${year}`;
-            //     },
-            // }))
             $('.datepicker').datepicker({
                 orientation: 'bottom'
             });
@@ -171,10 +166,32 @@
             })
         }
 
+        const initCuaca = () => {
+            const status = document.querySelector('select[name="status"]')
+            const description = document.querySelector('select[name="description"]')
+            const form = document.querySelector('#form-bmkg-group')
+            var showUploadCuaca
+            const check = () => {
+                if (status.value == 'Tidak Beroperasi' && description.value == 'Cuaca Buruk') {
+                    form.style.display = 'flex'
+                } else {
+                    form.style.display = 'none'                    
+                }
+            }
+            status.addEventListener('change', function () {
+                check()
+            })
+            description.addEventListener('change', function () {
+                check()
+            })
+            check()
+        }
+
         // init
         document.addEventListener('DOMContentLoaded', function () {
             initDatepicker()
             initChoices()
+            initCuaca()
         })
     </script>
 @endpush

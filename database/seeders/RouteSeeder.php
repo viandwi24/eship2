@@ -14,7 +14,7 @@ class RouteSeeder extends Seeder
      */
     public function run()
     {
-        Route::create(['departure' => 'Gresik', 'arrival' => 'Bawean']);
-        Route::create(['departure' => 'Bawean', 'arrival' => 'Gresik']);
+        Route::create(['departure' => 'Pelabuhan Umum Gresik', 'arrival' => 'Pelabuhan Penyebrangan Bawean']);
+        Route::create(['departure' => 'Pelabuhan Penyebrangan Bawean', 'arrival' => 'Pelabuhan Umum Gresik']);
     }
 }

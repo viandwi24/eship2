@@ -15,8 +15,7 @@ class CreateWeatherTable extends Migration
     {
         Schema::create('weather', function (Blueprint $table) {
             $table->id();
-            $table->date('date_start');
-            $table->date('date_end');
+            $table->foreignId('ship_operation_id')->onUpdate('cascade')->onDelete('cascade');
             $table->string('file', 255);
             $table->timestamps();
         });

@@ -62,12 +62,12 @@
                 ajax: route,
                 responsive: true,
                 autoWidth: false,
-                order: [[3, 'desc']],
+                order: [[3, 'desc'], [4, 'desc']],
                 columnDefs: [
                     { orderable: false, targets: [6] }
                 ],
                 columns: [
-                    { title: '#', data: 'id', render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
+                    { title: '#', data: null, render: (data, type, row, meta) => meta.row + meta.settings._iDisplayStart + 1 },
                     {
                         title: 'Kapal',
                         data: 'ship.name'
@@ -85,9 +85,9 @@
                         data: 'time'
                     },
                     {
-                        title: 'Rute',
+                        title: 'Pemberangkatan',
                         data: null,
-                        render: (data, type, row) => `${row.route.departure}-${row.route.arrival}`
+                        render: (data, type, row) => `${row.route.departure}`
                     },
                     {
                         title: '...',

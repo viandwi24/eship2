@@ -15,8 +15,7 @@ class Weather extends Model
      * @var array
      */
     protected $fillable = [
-        'date_start',
-        'date_end',
+        'ship_operation_id',
         'file',
     ];
 
@@ -26,7 +25,5 @@ class Weather extends Model
      * @var array
      */
     protected $casts = [
-        'date_start' => 'date',
-        'date_end' => 'date',
     ];
 }

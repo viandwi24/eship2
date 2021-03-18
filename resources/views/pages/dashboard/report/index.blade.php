@@ -11,7 +11,7 @@
                     Laporan
                 </div>
                 <div class="actions">
-                    <a href="{{ route('reports.export') }}" class="btn btn-secondary no-loader" target="_blank">
+                    <a href="#" class="btn btn-secondary no-loader" target="_blank" id="linkExport">
                         Export .xls
                     </a>
                 </div>
@@ -36,7 +36,7 @@
                             <div class="card-body">
                                 <div class="form-group row my-2">
                                     <label class="col-sm-4 col-form-label text-md-end">Tanggal :</label>
-                                    <div class="col-md-4">
+                                    <div class="col-md-5">
                                         <div class="row">
                                             <div class="col-lg-5 col-sm-12">
                                                 <div class="input-group">
@@ -124,6 +124,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group row my-1">
+                            <div class="offset-md-4 col-md-4">
+                                <a href="#" class="btn btn-sm btn-primary btn-see-report no-loader" target="_blank">
+                                    Lihat Laporan Petugas
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -163,7 +170,8 @@
         var table
 
         // datatables
-        const route = "{{ route('reports') }}";
+        const route = "{{ route('reports') }}"
+        const routeLink = "{{ route('reports.export') }}"
         const initTable = () => {
             table = $('#table-transactions').DataTable({
                 processing: true,
@@ -216,7 +224,7 @@
                         title: '...',
                         data: null,
                         render: (data, type, row) => {
-                            data.weather = JSON.parse(data.weather)
+                            // data.weather = JSON.parse(data.weather)
                             const weather = (data.weather != null) ? `'${data.weather.id}'` : `null`
                             console.log(data)
                             return `
@@ -224,7 +232,7 @@
                                 <button class="btn btn-sm btn-outline-primary" type="button"
                                     onclick="showModal(
                                         '${data.id}', '${data.ship.name}', '${data.date}',
-                                        ${weather}
+                                        ${weather}, ${data.report_id}
                                     )">
                                     <i class="bi bi-search"></i>
                                     <div class="d-inline-block ml-4">Detail</div>
@@ -235,9 +243,15 @@
                     },
                 ]
             });
-
-            $('#filter-date-start').change(() => table.draw());
-            $('#filter-date-end').change(() => table.draw());
+            const onChangeDate = () => {
+                const dateStart = $('#filter-date-start').val()
+                const dateEnd = $('#filter-date-end').val()
+                document.querySelector('#linkExport').href = `${routeLink}?date-start=${dateStart}&date-end=${dateEnd}`
+                table.draw()
+            }
+            $('#filter-date-start').change(onChangeDate)
+            $('#filter-date-end').change(onChangeDate)
+            onChangeDate()
         }
 
         // init modal
@@ -246,12 +260,14 @@
             modal = new bootstrap.Modal(modalEl, {})
             // showModal(1, 'Kapal', '1-2-2021')
         }
-        const showModal = (id, ship, date, weather = null, photo_embarkation = null) => {
+        const showModal = (id, ship, date, weather = null, report_id = null) => {
+            const routeReport = `{{ route('ship-reports.index') }}`
             const title = modalEl.querySelector('.nama-kapal')
             const inputShip = modalEl.querySelector('input[name="ship"]')
             const inputDate = modalEl.querySelector('input[name="date"]')
             const inputWeather = modalEl.querySelector('div.weather')
-            const routeWeather = `{{ route('weather.index') }}`
+            const inputBtnReport = modalEl.querySelector('a.btn-see-report')
+            const routeWeather = `{{ route('ship-operations.index') }}`
             title.innerHTML = `${ship} [${date}]`
             inputShip.value = `${ship}`
             inputDate.value = `${date}`
@@ -262,6 +278,17 @@
                 inputWeather.innerHTML = `
                     <a href="${routeWeather}/${weather}?view" target="_blank">Lihat data cuaca</a>
                 `
+            }
+
+            // report_id
+            if (report_id == null) {
+                inputBtnReport.classList.add('no-loader')
+                inputBtnReport.classList.add('disabled')
+                inputBtnReport.href = '#'
+            } else {
+                inputBtnReport.classList.remove('no-loader')
+                inputBtnReport.classList.remove('disabled')
+                inputBtnReport.href = `${routeReport}/${id}/edit`
             }
             modal.toggle()
         }
