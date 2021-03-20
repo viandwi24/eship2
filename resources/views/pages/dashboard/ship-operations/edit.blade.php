@@ -81,7 +81,7 @@
                                         </span>
                                         <select name="status" class="choices form-select">
                                             <option value="">--Pilih Status--</option>
-                                            <option value="Beroperasi" {{ ($shipOperation->status == 'Beroperasi' ? 'selected' : '') }}>Beroperasi</option>
+                                            <!--option value="Beroperasi" {{ ($shipOperation->status == 'Beroperasi' ? 'selected' : '') }}>Beroperasi</option-->
                                             <option value="Tidak Beroperasi" {{ ($shipOperation->status == 'Tidak Beroperasi' ? 'selected' : '') }}>Tidak Beroperasi</option>
                                         </select>
                                     </div>
@@ -97,7 +97,7 @@
                                             </svg>
                                         </span>
                                         <select name="description" class="choices form-select">
-                                            <option value="Aman" {{ old('description', $shipOperation->description) == 'Aman' ? 'selected' : '' }}>Aman</option>
+                                            <!--option value="Aman" {{ old('description', $shipOperation->description) == 'Aman' ? 'selected' : '' }}>Aman</option-->
                                             <option value="Cuaca Buruk" {{ old('description', $shipOperation->description) == 'Cuaca Buruk' ? 'selected' : '' }}>Cuaca Buruk</option>
                                             <option value="Perbaikan Mesin" {{ old('description', $shipOperation->description) == 'Perbaikan Mesin' ? 'selected' : '' }}>Perbaikan Mesin</option>
                                             <option value="Docking" {{ old('description', $shipOperation->description) == 'Docking' ? 'selected' : '' }}>Docking</option>

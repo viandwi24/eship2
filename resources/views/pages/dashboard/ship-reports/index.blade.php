@@ -8,8 +8,8 @@
         <div class="content-header">
             <div class="header">
                 <div class="title">
-                    Laporan Kapal
-                </div>
+                    Pelaporan
+                </div>   
                 <div class="actions">
                     <a class="btn btn-primary" href="{{ route('ship-reports.create') }}">Tambah</a></li>
                 </div>

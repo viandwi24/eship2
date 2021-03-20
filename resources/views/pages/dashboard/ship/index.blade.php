@@ -55,6 +55,10 @@
     <script>
         // datatables
         const route = "{{ route('ships.index') }}";
+        function beforeDelete(e) {
+            const alert = confirm('Yakin ingin menghapus ? Menghapus Kapal akan membuat semua data laporan kapal tersebut juga ikut terhapus.')
+            if (!alert) return e.preventDefault()
+        }
         const initTable = () => {
             $('#table-transactions').DataTable({
                 processing: true,
@@ -84,7 +88,7 @@
                                 <form action="${route}/${row.id}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="beforeDelete(event)"><i class="bi bi-trash"></i></button>
                                 </form>
                             </div>
                             `

@@ -22,7 +22,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb"> 
                     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item">Laporan Kapal</li>
+                    <li class="breadcrumb-item">Pelaporan Kapal</li>
                     <li class="breadcrumb-item active" aria-current="page">Tambah</li>
                 </ol>
             </nav>
@@ -176,6 +176,13 @@
                             <hr>
                             <div class="form-group row my-2">
                                 <div class="offset-md-4 col-md-4">
+                                    <div class="alert alert-warning" role="alert" id="alertShipFast" style="display: none;">
+                                        Tipe kapal cepat tidak mengangkut kendaraan.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row my-2">
+                                <div class="offset-md-4 col-md-4">
                                     <div class="alert alert-danger" role="alert" id="alertVehicle2Max" style="display: none;">
                                         Total Maksimum Kendaraan 2 adalah : <span></span>
                                     </div>
@@ -295,9 +302,13 @@
             //
             const check = () => {
                 if (shipSelected != null) {
+
+                    const inputCountVehicleWheel2 = document.querySelector('input[name="count_vehicle_wheel_2"]')
+                    const inputCountVehicleWheel4 = document.querySelector('input[name="count_vehicle_wheel_4"]')
+
                     // pax
                     totalPax = countAdult + countBaby + countSecurityForces
-                    const alertPaxMax = document.querySelector('#alertPaxMax')
+                    const alertPaxMax = document.querySelector('#alertPaxMax')                    
                     if (totalPax > shipSelected.max_pax) {
                         alertPaxMax.style.display = 'block'
                         alertPaxMax.querySelector('span').innerHTML = shipSelected.max_pax
@@ -321,6 +332,26 @@
                         alertVehicle2Max.querySelector('span').innerHTML = shipSelected.max_vehicle_wheel_2
                     } else {
                         alertVehicle2Max.style.display = 'none'
+                    }
+
+                    // 
+                    const alertShipFast = document.querySelector('#alertShipFast')
+                    if (shipSelected.type == "Cepat (HSC)") {
+                        alertShipFast.style.display = 'block'
+                        inputCountVehicleWheel2.disabled = true
+                        inputCountVehicleWheel4.disabled = true
+                    } else {
+                        alertShipFast.style.display = 'none'
+                        inputCountVehicleWheel2.disabled = false
+                        inputCountVehicleWheel4.disabled = false
+                    }
+
+                    if( shipSelected.id != 3 ) {
+                        alertShipFast.style.display = 'block'
+                        inputCountVehicleWheel2.disabled = true
+                        inputCountVehicleWheel4.disabled = true
+                        inputCountVehicleWheel2.value = 0
+                        inputCountVehicleWheel4.value = 0
                     }
                 }
             }

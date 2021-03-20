@@ -72,8 +72,6 @@ class ShipReportController extends Controller
             'count_adult' => 'required|numeric|min:0',
             'count_baby' => 'required|numeric|min:0',
             'count_security_forces' => 'required|numeric|min:0',
-            'count_vehicle_wheel_2' => 'required|numeric|min:0',
-            'count_vehicle_wheel_4' => 'required|numeric|min:0',
         ];
         if ($request->hasFile('photo_embarkation')) $rules['photo_embarkation'] = 'required|file|mimes:png,jpeg,jpg,bmp';
         if ($request->hasFile('photo_departure')) $rules['photo_departure'] = 'required|file|mimes:png,jpeg,jpg,bmp';
@@ -84,6 +82,19 @@ class ShipReportController extends Controller
         $data['date'] = Carbon::parse($request->date);
         $data['time'] = Carbon::parse($request->time)->format('H:i');
         $route = Route::findOrFail($request->route_id);
+
+        // 
+        $defaultForNumberInput = ['count_vehicle_wheel_2', 'count_vehicle_wheel_4'];
+        foreach ($defaultForNumberInput as $input)
+        {
+            if ($request->has($input))
+            {
+                $request->validate([$input => 'nullable|integer|min:0']);
+                $data[$input] = ($request->{$input} == null) ? 0 : $request->{$input};
+            } else {
+                $data[$input] = 0;
+            }
+        }
 
         // checking 
         $tmp = ShipReport::whereDate('date', Carbon::parse($request->date)->toDateString())->where('ship_id', $request->ship_id)->get();
@@ -170,8 +181,6 @@ class ShipReportController extends Controller
             'count_adult' => 'required|numeric|min:0',
             'count_baby' => 'required|numeric|min:0',
             'count_security_forces' => 'required|numeric|min:0',
-            'count_vehicle_wheel_2' => 'required|numeric|min:0',
-            'count_vehicle_wheel_4' => 'required|numeric|min:0',
         ];
         if ($request->hasFile('photo_embarkation')) $rules['photo_embarkation'] = 'required|file|mimes:png,jpeg,jpg,bmp';
         if ($request->hasFile('photo_departure')) $rules['photo_departure'] = 'required|file|mimes:png,jpeg,jpg,bmp';
@@ -180,10 +189,26 @@ class ShipReportController extends Controller
         if ($request->hasFile('photo_departure')) $this->checkAndDeleteFile($shipReport, 'photo_departure');
 
         // 
+        $data = $request->all();
+        $data['date'] = Carbon::parse($request->date);
+        $data['time'] = Carbon::parse($request->time)->format('H:i');
+
+
+        // 
+        $defaultForNumberInput = ['count_vehicle_wheel_2', 'count_vehicle_wheel_4'];
+        foreach ($defaultForNumberInput as $input)
+        {
+            if ($request->has($input))
+            {
+                $request->validate([$input => 'nullable|integer|min:0']);
+                $data[$input] = ($request->{$input} == null) ? 0 : $request->{$input};
+            } else {
+                $data[$input] = 0;
+            }
+        }
+
+        // 
         DB::transaction(function () use ($request, $shipReport, &$data) {
-            $data = $request->all();
-            $data['date'] = Carbon::parse($request->date);
-            $data['time'] = Carbon::parse($request->time)->format('H:i');
             if ($request->hasFile('photo_embarkation'))
             {
                 $file_photo_embarkation = $request->photo_embarkation;

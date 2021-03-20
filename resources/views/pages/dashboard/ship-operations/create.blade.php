@@ -80,7 +80,7 @@
                                         </span>
                                         <select name="status" class="choices form-select">
                                             <option value="">--Pilih Status--</option>
-                                            <option value="Beroperasi">Beroperasi</option>
+                                            <!--option value="Beroperasi">Beroperasi</option-->
                                             <option value="Tidak Beroperasi">Tidak Beroperasi</option>
                                         </select>
                                     </div>
@@ -96,7 +96,7 @@
                                             </svg>
                                         </span>
                                         <select name="description" class="choices form-select">
-                                            <option value="Aman">Aman</option>
+                                            <!--option value="Aman">Aman</option-->
                                             <option value="Cuaca Buruk">Cuaca Buruk</option>
                                             <option value="Perbaikan Mesin">Perbaikan Mesin</option>
                                             <option value="Docking">Docking</option>

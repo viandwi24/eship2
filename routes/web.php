@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\ShipOperationController as DashboardShipOpera
 use App\Http\Controllers\Dashboard\ShipReportController as DashboardShipReportController;
 use App\Http\Controllers\Dashboard\RouteController as DashboardRouteController;
 use App\Http\Controllers\Dashboard\ReportController as DashboardReportController;
+use App\Http\Controllers\Dashboard\ApiReportController as ApiReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,9 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+
+Route::get('/apireport', [ApiReportController::class, 'export']);
+Route::get('/apiweather', [ApiReportController::class, 'getWeather']);
 Route::group([
     'prefix' => 'dashboard',
     'middleware' => ['auth']

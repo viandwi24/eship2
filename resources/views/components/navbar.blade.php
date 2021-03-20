@@ -10,7 +10,7 @@
         <div class="navbar-header">
             <div class="navbar-brand">
                 <a href="#" class="title">Sistem Informasi Angkutan</a>
-                <a href="#" class="subtitle">Penyebrangan Gresik - Bawean</a>
+                <a href="#" class="subtitle">Penyeberangan Gresik - Bawean</a>
             </div>
         </div>
         <ul class="menu">

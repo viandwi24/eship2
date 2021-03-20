@@ -63,8 +63,8 @@
                                         </span>
                                         <select name="type" class="form-select" autocomplete="off">
                                             <option value="">--Pilih Tipe--</option>
-                                            <option value="Kapal Motor" {{ ($ship->type == 'Kapal Motor') ? 'selected' : '' }}>Kapal Motor</option>
-                                            <option value="Kapal Cepat" {{ ($ship->type == 'Kapal Cepat') ? 'selected' : '' }}>Kapal Cepat</option>
+                                            <option value="Non Cepat (Ro-Ro)" {{ ($ship->type == 'Non Cepat (Ro-Ro)') ? 'selected' : '' }}>Non Cepat (Ro-Ro)</option>
+                                            <option value="Cepat (HSC)" {{ ($ship->type == 'Cepat (HSC)') ? 'selected' : '' }}>Cepat (HSC)</option>
                                         </select>
                                     </div>
                                 </div>

@@ -61,9 +61,8 @@
                                             </svg>
                                         </span>
                                         <select name="type" class="form-select" autocomplete="off">
-                                            <option value="">--Pilih Tipe--</option>
-                                            <option value="Kapal Motor">Kapal Motor</option>
-                                            <option value="Kapal Cepat">Kapal Cepat</option>
+                                            <option value="Non Cepat (Ro-Ro)">Non Cepat (Ro-Ro)</option>
+                                            <option value="Cepat (HSC)">Cepat (HSC)</option>
                                         </select>
                                     </div>
                                 </div>
