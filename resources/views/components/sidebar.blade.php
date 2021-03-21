@@ -18,7 +18,7 @@
         [ 'role' => [], 'type' => 'item', 'text' => 'Dashboard', 'icon' => null, 'img' => '<img src="'.asset('img/icons/Dashboard.png').'" width="26px" class="icon tw-inline-block tw-mt-1">', 'route' => route('dashboard'), 'regex' => 'dashboard' ],
         [ 'role' => [], 'type' => 'item', 'text' => 'Profil', 'icon' => null, 'img' => '<img src="'.asset('img/icons/Anggota.png').'" width="22px" class="icon tw-inline-block">', 'route' => route('profile'), 'regex' => 'dashboard/profil' ],
         [ 'role' => ['Admin'], 'type' => 'header', 'text' => 'Administrasi' ],
-        //[ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Kapal', 'icon' => null, 'img' => '<img src="'.asset('img/icons/Kapal.png').'" width="32px" class="icon tw-inline-block tw-mt-2">', 'route' => route('ships.index'), 'regex' => '*ships*' ],
+        [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Kapal', 'icon' => null, 'img' => '<img src="'.asset('img/icons/Kapal.png').'" width="32px" class="icon tw-inline-block tw-mt-2">', 'route' => route('ships.index'), 'regex' => '*ships*' ],
         [ 'role' => ['Admin'], 'type' => 'item', 'text' => 'Operasi Kapal', 'icon' => 'cone-striped', 'route' => route('ship-operations.index'), 'regex' => '*ship-operations*' ],
         [ 'role' => ['Admin', 'Petugas'], 'type' => 'header', 'text' => 'Form Petugas' ],
         [ 'role' => ['Admin', 'Petugas'], 'type' => 'item', 'text' => 'Pelaporan', 'icon' => null, 'img' => '<img src="'.asset('img/icons/Form Petugas.png').'" width="22px" class="icon tw-inline-block tw-mt-1">', 'route' => route('ship-reports.index'), 'regex' => '*ship-reports*' ],
